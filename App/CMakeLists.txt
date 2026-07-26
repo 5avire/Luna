@@ -11,7 +11,7 @@ file(GLOB_RECURSE SANDBOX_SOURCE_FILES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SANDBOX_SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}/luna/src
+    ${CMAKE_SOURCE_DIR}/Luna/src
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Luna)

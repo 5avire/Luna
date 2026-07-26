@@ -20,5 +20,5 @@ add_compile_options(
     $<$<CONFIG:Release>:-O2>
 )
 
-add_subdirectory(luna)
-add_subdirectory(app)
+add_subdirectory(Luna)
+add_subdirectory(App)

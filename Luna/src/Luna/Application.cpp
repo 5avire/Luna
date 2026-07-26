@@ -7,6 +7,7 @@ namespace Luna {
 
     Application::Application()
     {
+        m_Window = std::unique_ptr<Window>(Window::Create());
     }
 
     Application::~Application()
@@ -15,11 +16,9 @@ namespace Luna {
 
     void Application::Run()
     {
-        WindowResizeEvent e(1280, 720);
-        LUNA_TRACE(e.ToString());
-
-        LUNA_CORE_CRITICAL("Not subscribed to cherno");
-
-        while(true);
+        while(m_Running)
+        {
+            m_Window->OnUpdate();
+        }
     }
 }

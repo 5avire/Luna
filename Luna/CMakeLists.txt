@@ -10,15 +10,23 @@ file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog)
 
+set(GLFW_BUILD_DOCS     OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS    OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW)
+
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
-    $<$<CONFIG:Debug>:LUNA_DEBUG>
-    $<$<CONFIG:Release>:LUNA_RELEASE>
+    $<$<CONFIG:Debug>:LUNA_DEBUG;LUNA_ENABLE_ASSERTS>
+    $<$<CONFIG:Release>:LUNA_RELEASE;LUNA_ENABLE_ASSERTS>
     $<$<CONFIG:Dist>:LUNA_DIST>
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include
 )
