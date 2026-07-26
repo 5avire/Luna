@@ -1,5 +1,7 @@
 #pragma once
 
-#include <luna/application.h>
+// -- Application --
+#include <Luna/Application.h>
 
-#include <luna/entryPoint.h>
+// -- Entry Point --
+#include <Luna/EntryPoint.h>

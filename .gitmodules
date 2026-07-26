@@ -1,0 +1,3 @@
+[submodule "luna/vendor/spdlog"]
+	path = luna/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
