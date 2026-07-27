@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Luna/Core.h>
+#include <spdlog/fmt/ostr.h>
+
 
 #include <string>
 #include <functional>
@@ -82,3 +84,6 @@ namespace Luna {
         return os << e.ToString();
     }
 }
+
+template <>
+struct fmt::formatter<Luna::Event> : ostream_formatter {};
