@@ -51,6 +51,8 @@ namespace Luna {
             {
                 return GetCategoryFlags() & category;
             }
+
+            inline const bool IsHandled() const { return m_Handled; }
         protected:
             bool m_Handled = false;
     };
