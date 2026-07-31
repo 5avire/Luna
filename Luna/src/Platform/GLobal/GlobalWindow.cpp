@@ -1,6 +1,6 @@
 #include "GlobalWindow.h"
-#include "Luna/Log.h"
 
+#include "Luna/Log.h"
 #include "Luna/Events/Event.h"
 #include "Luna/Events/ApplicationEvent.h"
 #include "Luna/Events/KeyEvent.h"
@@ -41,7 +41,7 @@ namespace Luna {
         if (!s_GLFWInitialized)
         {
             int success = glfwInit();
-            LUNA_CORE_ASSERT(success, "Could not initialize GLFW");
+            LUNA_CORE_ASSERT(success, "Could not initialize GLFW!");
 
             glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -50,6 +50,10 @@ namespace Luna {
 
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        LUNA_CORE_ASSERT(status, "Failed to load glad!");
+
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
