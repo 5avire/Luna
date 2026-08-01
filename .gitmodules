@@ -6,7 +6,7 @@
 	path = Luna/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
 	branch = v1.x
-[submodule "Luna/vendor/imgui"]
+[submodule "Luna/vendor/imgui/imgui"]
 	path = Luna/vendor/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
