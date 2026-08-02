@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Application.h"
-
-#include "Log.h"
+#include "Luna/Log.h"
+#include "Luna/Application.h"
 
 extern Luna::Application* Luna::CreateApplication();
 

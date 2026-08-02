@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Layer.h"
+#include "Luna/Core.h"
+#include "Luna/Layer.h"
 
 #include <vector>
 

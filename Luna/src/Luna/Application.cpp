@@ -1,10 +1,9 @@
 #include "Application.h"
 
 #include "Luna/Log.h"
+#include "Luna/Input.h"
 
 #include <glad/glad.h>
-
-#include "Luna/Input.h"
 
 namespace Luna {
 

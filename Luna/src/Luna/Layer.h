@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Events/Event.h"
+#include "Luna/Core.h"
+#include "Luna/Events/Event.h"
 
 namespace Luna {
 

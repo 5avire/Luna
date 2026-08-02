@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Events/Event.h"
-#include "Core.h"
+#include "Luna/Core.h"
+#include "Luna/Events/Event.h"
 
 #include <string>
 

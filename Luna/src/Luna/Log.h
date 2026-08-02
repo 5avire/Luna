@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Luna/Core.h"
 
 #include <memory>
 
