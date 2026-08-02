@@ -11,7 +11,6 @@ class ExampleLayer : public Luna::Layer
 
         void OnUpdate() override
         {
-            LUNA_INFO("ExampleLayer::Update");
         }
 
         void OnEvent(Luna::Event& event) override
@@ -26,6 +25,7 @@ class Sandbox : public Luna::Application
         Sandbox()
         {
             PushLayer(new ExampleLayer());
+            PushOverlay(new Luna::ImGuiLayer());
         }
 
         ~Sandbox()

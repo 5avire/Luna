@@ -1,7 +1,5 @@
 #pragma once
 
-#include <csignal>
-
 #ifdef _WIN32
     #define LUNA_DEBUGBREAK() __debugbreak()
 #elif defined(__linux__)
@@ -20,3 +18,5 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+#define LUNA_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
