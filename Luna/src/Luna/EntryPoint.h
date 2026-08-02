@@ -10,11 +10,11 @@ int main(int argc, char** argv)
 {
     Luna::Log::Init();
 
-    LUNA_CORE_TRACE("Starting...");
+    LUNA_CORE_INFO("Starting...");
 
     auto app = Luna::CreateApplication();
     app->Run();
     delete app;
 
-    LUNA_CORE_TRACE("Terminating...");
+    LUNA_CORE_INFO("Terminating...");
 }

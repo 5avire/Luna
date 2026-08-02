@@ -1,29 +1,36 @@
 # LunaEngine
----
-
-The Engine I'm building along while following TheCherno
-
----
-### Requirements to Build (Only tested on Linux)
-
-* OpenGL Support
-* CMake 3.16 or Higher
-* C++ Compiler
----
-
-### Steps to Build
-
-* Open project source directory in terminal
-##### Auto
-* Linux: Run the build.sh file
-
-##### Manual
-* Make a build directory and go into it in the terminal
-* Run cmake .. and generate the build files of your choice
-* Open/Run the files.
-
-###### Example: On linux, it'll build into MakeFiles so just run make, and on Windows, it makes Visual Studio Projects, so double click it to open.
+A game engine built while following TheCherno's Game Engine series, with additional experimentation and learning along the way.
 
 ---
 
-Note :- I do use AI for the purpose of learning so my code style might be a bit weird cause that's where I learn other than youtube cause am lazy. However nothing is copy/pasted from it.
+## Platform Support
+Currently tested on Linux. Other platforms may work but are untested.
+
+## Requirements
+- CMake 3.16 or newer
+- A C++ compiler with C++17 support
+- OpenGL-compatible graphics drivers
+
+---
+
+## Building
+Open a terminal in the project root directory.
+
+### Automatic (Linux)
+Run the provided build script:
+
+```sh
+./build.sh
+```
+
+### Manual (All Platforms)
+Configure and build the project:
+
+```sh
+cmake -S . -B build && cmake --build build
+```
+The compiled binaries will be placed in the `bin/` directory.
+
+---
+## Note
+I use AI as a learning aid to help explain concepts and summarize documentation, particularly when official documentation is lengthy. The code itself is written by me as part of the learning process rather than copied from AI-generated solutions.
