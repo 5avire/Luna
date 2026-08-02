@@ -36,7 +36,7 @@ namespace Luna {
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
 
-        LUNA_CORE_INFO("Creating Window {0} ({1}, {2}", props.Title, props.Width, props.Height);
+        LUNA_CORE_INFO("Creating Window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
         if (!s_GLFWInitialized)
         {
