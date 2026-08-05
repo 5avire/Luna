@@ -15,7 +15,14 @@ class ExampleLayer : public Luna::Layer
 
         void OnEvent(Luna::Event& event) override
         {
-            LUNA_TRACE("{0}", event);
+            if (event.GetEventType() == Luna::EventType::KeyPressed)
+            {
+                Luna::KeyPressedEvent& e = (Luna::KeyPressedEvent&)event;
+                LUNA_INFO("Pressed: {0}", (char)e.GetKeyCode());
+            }
+
+            if (Luna::Input::IsMouseButtonPressed(LunaMouseButton_Left))
+                LUNA_INFO("Clicked left mouse button");
         }
 };
 
