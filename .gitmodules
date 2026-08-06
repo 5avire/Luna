@@ -10,3 +10,6 @@
 	path = Luna/vendor/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
+[submodule "Luna/vendor/glm"]
+	path = Luna/vendor/glm
+	url = https://github.com/g-truc/glm.git

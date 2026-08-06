@@ -9,7 +9,8 @@
 #include <Luna/KeyCodes.h>
 #include <Luna/MouseButtonCodes.h>
 
-// -- Logging Bugs out without ostr sometimes --
+// -- Logging ---
+// Bugs out without ostr sometimes
 #include <spdlog/fmt/ostr.h>
 #include <Luna/Log.h>
 

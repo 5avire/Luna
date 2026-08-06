@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME} ${SANDBOX_SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Luna/src
+    ${CMAKE_SOURCE_DIR}/Luna/vendor/glm
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Luna)

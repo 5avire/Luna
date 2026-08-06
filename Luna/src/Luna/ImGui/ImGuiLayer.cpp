@@ -10,7 +10,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-
 static ImGuiKey ImGui_ImplGlfw_KeyToImGuiKey(int keycode, int scancode);
 namespace Luna {
 

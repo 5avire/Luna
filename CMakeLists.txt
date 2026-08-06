@@ -18,6 +18,7 @@ endif()
 add_compile_options(
     $<$<CONFIG:Debug>:-g>
     $<$<CONFIG:Release>:-O2>
+    $<$<CONFIG:Dist>:-O3>
 )
 
 add_subdirectory(Luna)
