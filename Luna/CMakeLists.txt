@@ -24,8 +24,22 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad)
 # imgui
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 
+# glm
+add_library(glm INTERFACE)
+target_include_directories(glm INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm
+)
+
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog imgui)
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        glfw
+        glad
+        spdlog
+    PUBLIC
+        imgui
+        glm
+)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
     $<$<CONFIG:Debug>:LUNA_DEBUG;LUNA_ENABLE_ASSERTS>
@@ -38,5 +52,4 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLAD/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm
 )

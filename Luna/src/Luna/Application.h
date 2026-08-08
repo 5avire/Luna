@@ -7,6 +7,8 @@
 #include "Luna/Events/Event.h"
 #include "Luna/Events/ApplicationEvent.h"
 
+#include "Luna/ImGui/ImGuiLayer.h"
+
 #include <memory>
 
 namespace Luna {
@@ -30,6 +32,7 @@ namespace Luna {
             bool OnWindowClose(WindowCloseEvent e);
 
             std::unique_ptr<Window> m_Window;
+            ImGuiLayer* m_ImGuiLayer;
             bool m_Running = true;
             LayerStack m_LayerStack;
         private:
