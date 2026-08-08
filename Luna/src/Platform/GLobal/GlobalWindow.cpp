@@ -40,9 +40,9 @@ namespace Luna {
 
         if (!s_GLFWInitialized)
         {
-            bool isWayland = getenv("WAYLAND_DISPLAY");
-            if (isWayland)
-                glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+#if defined(LUNA_FORCE_X11) && defined(__linux__)
+            glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+#endif
 
             int success = glfwInit();
             LUNA_CORE_ASSERT(success, "Could not initialize GLFW!");
