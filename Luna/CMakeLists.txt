@@ -45,6 +45,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
     $<$<CONFIG:Debug>:LUNA_DEBUG;LUNA_ENABLE_ASSERTS>
     $<$<CONFIG:Release>:LUNA_RELEASE;LUNA_ENABLE_ASSERTS>
     $<$<CONFIG:Dist>:LUNA_DIST>
+    SPDLOG_COMPILED_LIB
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

@@ -15,11 +15,16 @@ if(NOT CMAKE_BUILD_TYPE IN_LIST ALLOWED_BUILD_TYPES)
     message(FATAL_ERROR "Invalid build type '${CMAKE_BUILD_TYPE}'. Allowed types: ${ALLOWED_BUILD_TYPES}")
 endif()
 
+# SPDLOG
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
 add_compile_options(
     $<$<CONFIG:Debug>:-g>
     $<$<CONFIG:Release>:-O2>
     $<$<CONFIG:Dist>:-O3>
 )
+add_compile_definitions(LUNA_FORCE_X11)
 
 add_subdirectory(Luna)
 add_subdirectory(App)
