@@ -1,10 +1,11 @@
 #include "GlobalWindow.h"
 
 #include "Luna/Log.h"
-#include "Luna/Events/Event.h"
-#include "Luna/Events/ApplicationEvent.h"
 #include "Luna/Events/KeyEvent.h"
 #include "Luna/Events/MouseEvent.h"
+#include "Luna/Events/ApplicationEvent.h"
+
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Luna {
 
@@ -50,12 +51,10 @@ namespace Luna {
             glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFWInitialized = true;
         }
-
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_Window);
 
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        LUNA_CORE_ASSERT(status, "Failed to load glad!");
+        m_Context = new OpenGLContext(m_Window);
+        m_Context->Init();
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
@@ -152,15 +151,15 @@ namespace Luna {
         });
     }
 
-    void GlobalWindow::Shutdown()
-    {
-        glfwDestroyWindow(m_Window);
-    }
-
     void GlobalWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_Context->SwapBuffers();
+    }
+
+    void GlobalWindow::Shutdown()
+    {
+        glfwDestroyWindow(m_Window);
     }
 
     void GlobalWindow::SetVSync(bool enabled)

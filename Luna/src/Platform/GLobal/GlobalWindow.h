@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Luna/Window.h"
+#include "Luna/Renderer/GraphicsContext.h"
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Luna {
@@ -29,6 +29,7 @@ namespace Luna {
             virtual void Shutdown();
         private:
             GLFWwindow* m_Window;
+            GraphicsContext* m_Context;
 
             struct WindowData
             {
