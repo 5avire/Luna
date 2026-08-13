@@ -10,8 +10,9 @@ int main(int argc, char** argv)
     Luna::Log::Init();
 
     LUNA_CORE_INFO("Starting...");
-
     auto app = Luna::CreateApplication();
+    LUNA_CORE_ASSERT(app, "App creation failed");
+
     app->Run();
     delete app;
 
