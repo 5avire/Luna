@@ -3,9 +3,11 @@
 // -- Application --
 #include <Luna/Application.h>
 
+// -- Application Layers --
 #include <Luna/Layer.h>
 #include <Luna/ImGui/ImGuiLayer.h>
 
+// -- Inputs --
 #include <Luna/Input.h>
 #include <Luna/KeyCodes.h>
 #include <Luna/MouseButtonCodes.h>
