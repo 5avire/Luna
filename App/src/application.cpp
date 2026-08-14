@@ -1,4 +1,3 @@
-#include "Luna/ImGui/ImGuiLayer.h"
 #include <Luna.h>
 #include <imgui/imgui.h>
 
@@ -16,8 +15,8 @@ class ExampleLayer : public Luna::Layer
 
         void OnImGuiRender() override
         {
-            ImGui::Begin("Test");
-            ImGui::Text("Hello ImGui");
+            ImGui::Begin("Luna-Engine");
+            ImGui::Text("Welcome to Luna Engine!!");
             ImGui::End();
         }
 
