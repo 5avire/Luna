@@ -16,12 +16,19 @@ Currently tested on Linux. Other platforms may work but are untested.
 ## Building
 Open a terminal in the project root directory.
 
-### Automatic (Linux)
+### Automatic
 Run the provided build script:
 
+#### Linux
 ```sh
 ./build.sh
 ```
+
+#### Windows
+```bat
+build.bat
+```
+##### You can also double click the .bat file via file manager.
 
 ### Manual (All Platforms)
 Configure and build the project:
