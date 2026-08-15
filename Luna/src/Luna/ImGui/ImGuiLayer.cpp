@@ -4,6 +4,8 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
+#include "JetBrainMonoFont.h"
+
 #include "Luna/Log.h"
 #include "Luna/Core.h"
 #include "Luna/Application.h"
@@ -41,12 +43,95 @@ namespace Luna {
         //io.ConfigViewportsNoAutoMerge = true;
         //io.ConfigViewportsNoTaskBarIcon = true;
 
+        // Font
+        ImFontConfig fontConfig;
+        strcpy(fontConfig.Name, "JetBrainsMono-Regular");
+        ImFont* myFont = io.Fonts->AddFontFromMemoryCompressedBase85TTF(
+            JetBrainsMono_Regular,
+            16.0f,
+            &fontConfig
+        );
+        io.FontDefault = myFont;
+
+        strcpy(fontConfig.Name, "JetBrainsMono-Bold");
+        io.Fonts->AddFontFromMemoryCompressedBase85TTF(
+            JetBrainsMono_Bold,
+            16.0f,
+            &fontConfig
+        );
+
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
         //ImGui::StyleColorsLight();
 
-        // Setup scaling
+        // Setup scaling + Theme
         ImGuiStyle& style = ImGui::GetStyle();
+
+        ImVec4* colors = style.Colors;
+        
+        // Base colors
+        const ImVec4 bg_color = ImVec4(0.13f, 0.14f, 0.15f, 1.00f);
+        const ImVec4 bg_color_light = ImVec4(0.20f, 0.22f, 0.24f, 1.00f);
+        const ImVec4 accent = ImVec4(0.40f, 0.60f, 0.90f, 1.00f);
+        const ImVec4 accent_light = ImVec4(0.50f, 0.70f, 1.00f, 1.00f);
+        const ImVec4 accent_dark = ImVec4(0.30f, 0.50f, 0.80f, 1.00f);
+        const ImVec4 text = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
+        const ImVec4 text_disabled = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+        
+        // Window
+        colors[ImGuiCol_WindowBg] = bg_color;
+        colors[ImGuiCol_ChildBg] = bg_color;
+        colors[ImGuiCol_PopupBg] = bg_color_light;
+        
+        // Text
+        colors[ImGuiCol_Text] = text;
+        colors[ImGuiCol_TextDisabled] = text_disabled;
+        
+        // Frames
+        colors[ImGuiCol_FrameBg] = bg_color_light;
+        colors[ImGuiCol_FrameBgHovered] = accent;
+        colors[ImGuiCol_FrameBgActive] = accent_dark;
+        
+        // Buttons
+        colors[ImGuiCol_Button] = accent;
+        colors[ImGuiCol_ButtonHovered] = accent_light;
+        colors[ImGuiCol_ButtonActive] = accent_dark;
+        
+        // Headers
+        colors[ImGuiCol_Header] = accent;
+        colors[ImGuiCol_HeaderHovered] = accent_light;
+        colors[ImGuiCol_HeaderActive] = accent_dark;
+        
+        // Tabs
+        colors[ImGuiCol_Tab] = bg_color_light;
+        colors[ImGuiCol_TabHovered] = accent_light;
+        colors[ImGuiCol_TabSelected] = accent;
+        colors[ImGuiCol_TabSelectedOverline] = accent_light;
+        
+        // Title
+        colors[ImGuiCol_TitleBg] = bg_color;
+        colors[ImGuiCol_TitleBgActive] = bg_color_light;
+        colors[ImGuiCol_TitleBgCollapsed] = bg_color;
+        
+        // Scrollbar
+        colors[ImGuiCol_ScrollbarBg] = bg_color;
+        colors[ImGuiCol_ScrollbarGrab] = bg_color_light;
+        colors[ImGuiCol_ScrollbarGrabHovered] = accent;
+        colors[ImGuiCol_ScrollbarGrabActive] = accent_dark;
+        
+        // Style properties
+        style.WindowRounding = 6.0f;
+        style.FrameRounding = 4.0f;
+        style.ScrollbarRounding = 6.0f;
+        style.GrabRounding = 4.0f;
+        style.TabRounding = 4.0f;
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+
         style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
         style.FontScaleDpi = main_scale;        // Set initial font scale. (in docking branch: using io.ConfigDpiScaleFonts=true automatically overrides this for every window depending on the current monitor)
         io.ConfigDpiScaleFonts = true;          // [Experimental] Automatically overwrite style.FontScaleDpi in Begin() when Monitor DPI changes. This will scale fonts but _NOT_ scale sizes/padding for now.
