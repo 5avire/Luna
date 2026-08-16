@@ -127,7 +127,6 @@ namespace Luna {
             virtual void SetLayout(const BufferLayout& layout) = 0;
 
             static VertexBuffer* Create(float* vertices, uint32_t size);
-        private:
     };
 
     class IndexBuffer
@@ -142,7 +141,6 @@ namespace Luna {
             virtual uint32_t GetCount() const = 0;
 
             static IndexBuffer* Create(uint32_t* vertices, uint32_t count);
-        private:
     };
 
 }

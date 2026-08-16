@@ -4,7 +4,7 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
-#include "JetBrainMonoFont.h"
+#include "JetBrainMonoFont.embeded"
 
 #include "Luna/Log.h"
 #include "Luna/Core.h"
@@ -70,14 +70,14 @@ namespace Luna {
         ImVec4* colors = style.Colors;
         
         // Base colors
-        const ImVec4 bg_color = ImVec4(0.13f, 0.14f, 0.15f, 1.00f);
-        const ImVec4 bg_color_light = ImVec4(0.20f, 0.22f, 0.24f, 1.00f);
-        const ImVec4 accent = ImVec4(0.40f, 0.60f, 0.90f, 1.00f);
-        const ImVec4 accent_light = ImVec4(0.50f, 0.70f, 1.00f, 1.00f);
-        const ImVec4 accent_dark = ImVec4(0.30f, 0.50f, 0.80f, 1.00f);
-        const ImVec4 text = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
-        const ImVec4 text_disabled = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-        
+        const ImVec4 bg_color        = ImVec4(0.102f, 0.102f, 0.118f, 1.00f);
+        const ImVec4 bg_color_light  = ImVec4(0.118f, 0.118f, 0.141f, 1.00f);
+        const ImVec4 accent          = ImVec4(0.537f, 0.706f, 0.980f, 1.00f);
+        const ImVec4 accent_light    = ImVec4(0.690f, 0.788f, 1.000f, 1.00f);
+        const ImVec4 accent_dark     = ImVec4(0.400f, 0.580f, 0.850f, 1.00f);
+        const ImVec4 text            = ImVec4(0.878f, 0.941f, 1.000f, 1.00f);
+        const ImVec4 text_disabled   = ImVec4(0.467f, 0.467f, 0.467f, 1.00f);        
+
         // Window
         colors[ImGuiCol_WindowBg] = bg_color;
         colors[ImGuiCol_ChildBg] = bg_color;

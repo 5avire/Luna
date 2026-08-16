@@ -8,7 +8,7 @@ namespace Luna {
     {
         public:
             OpenGLVertexBuffer(float* vertices, uint32_t size);
-            virtual ~OpenGLVertexBuffer() {}
+            virtual ~OpenGLVertexBuffer();
 
             virtual void SetData() override {};
 
@@ -26,7 +26,7 @@ namespace Luna {
     {
         public:
             OpenGLIndexBuffer(uint32_t* vertices, uint32_t count);
-            virtual ~OpenGLIndexBuffer() {}
+            virtual ~OpenGLIndexBuffer();
 
             virtual void SetData() override {};
 
