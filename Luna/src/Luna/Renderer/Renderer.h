@@ -1,17 +1,17 @@
 #pragma once
 
-namespace Luna {
+#include "RenderCommand.h"
 
-    enum class RenderAPI
-    {
-        None = 0, OpenGL = 1
-    };
+namespace Luna {
 
     class Renderer
     {
         public:
-            inline static RenderAPI GetAPI() { return m_RenderAPI; }
-        private:
-            static RenderAPI m_RenderAPI;
+            static void BeginScene(); // TODO: Take all params
+            static void EndScene();
+
+            static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+            inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
     };
 }

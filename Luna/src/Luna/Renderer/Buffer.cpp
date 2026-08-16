@@ -11,8 +11,8 @@ namespace Luna {
     {
         switch (Renderer::GetAPI())
         {
-            case Luna::RenderAPI::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
-            case Luna::RenderAPI::OpenGL:  return new OpenGLVertexBuffer(vertices, size); break;
+            case Luna::RendererAPI::API::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
+            case Luna::RendererAPI::API::OpenGL:  return new OpenGLVertexBuffer(vertices, size); break;
         }
 
         LUNA_CORE_ASSERT(false, "UNKNOWN API");
@@ -23,8 +23,8 @@ namespace Luna {
     {
         switch (Renderer::GetAPI())
         {
-            case Luna::RenderAPI::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
-            case Luna::RenderAPI::OpenGL:  return new OpenGLIndexBuffer(vertices, count); break;
+            case Luna::RendererAPI::API::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
+            case Luna::RendererAPI::API::OpenGL:  return new OpenGLIndexBuffer(vertices, count); break;
         }
 
         LUNA_CORE_ASSERT(false, "UNKNOWN API");

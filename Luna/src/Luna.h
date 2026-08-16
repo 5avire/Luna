@@ -12,6 +12,9 @@
 #include <Luna/KeyCodes.h>
 #include <Luna/MouseButtonCodes.h>
 
+// -- Renderer --
+#include <Luna/Renderer/Renderer.h>
+
 // -- Logging ---
 // Bugs out without ostr sometimes
 #include <spdlog/fmt/ostr.h>

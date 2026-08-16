@@ -10,8 +10,8 @@ namespace Luna {
     {
         switch (Renderer::GetAPI())
         {
-            case Luna::RenderAPI::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
-            case Luna::RenderAPI::OpenGL:  return new OpenGLVertexArray(); break;
+            case Luna::RendererAPI::API::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
+            case Luna::RendererAPI::API::OpenGL:  return new OpenGLVertexArray(); break;
         }
 
         LUNA_CORE_ASSERT(false, "UNKNOWN API");

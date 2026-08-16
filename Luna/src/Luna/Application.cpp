@@ -3,7 +3,7 @@
 #include "Luna/Log.h"
 #include "Luna/Input.h"
 
-#include <glad/glad.h>
+#include "Luna/Renderer/Renderer.h"
 
 #include <string>
 #include <cstdint>
@@ -156,16 +156,18 @@ namespace Luna {
     {
         while(m_Running)
         {
-            glClearColor(0.15f, 0.15f, 0.15f, 1.00f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
+            RenderCommand::Clear();
+
+            Renderer::BeginScene();
 
             m_ShaderSq->Bind();
-            m_SqVertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_SqVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_SqVertexArray);
 
             m_Shader->Bind();
-            m_VertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_VertexArray);
+
+            Renderer::EndScene();
 
             // Normal Layers Updates
             for (Layer* layer : m_LayerStack)
