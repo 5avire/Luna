@@ -2,7 +2,7 @@
 
 #include "Luna/Core.h"
 
-#include <memory>
+#include <lunapch.h>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>

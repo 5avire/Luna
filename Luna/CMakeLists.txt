@@ -41,6 +41,7 @@ target_link_libraries(${PROJECT_NAME}
         glm
 )
 
+# Compile defs
 target_compile_definitions(${PROJECT_NAME} PUBLIC
     $<$<CONFIG:Debug>:LUNA_DEBUG;LUNA_ENABLE_ASSERTS>
     $<$<CONFIG:Release>:LUNA_RELEASE;LUNA_ENABLE_ASSERTS>
@@ -48,6 +49,10 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
     SPDLOG_COMPILED_LIB
 )
 
+# Precompiled Headers
+target_precompile_headers(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/lunapch.h)
+
+# Include Dirs
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include

@@ -146,7 +146,7 @@ namespace Luna {
 
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 450");
+        ImGui_ImplOpenGL3_Init("#version 460");
     }
 
     void ImGuiLayer::OnDetach()

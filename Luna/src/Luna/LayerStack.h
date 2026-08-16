@@ -3,7 +3,7 @@
 #include "Luna/Core.h"
 #include "Luna/Layer.h"
 
-#include <vector>
+#include <lunapch.h>
 
 namespace Luna {
 

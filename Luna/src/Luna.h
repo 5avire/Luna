@@ -1,5 +1,8 @@
 #pragma once
 
+// -- Core --
+#include <Luna/Core.h>
+
 // -- Application --
 #include <Luna/Application.h>
 

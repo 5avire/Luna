@@ -2,8 +2,7 @@
 
 #include "Luna/Renderer/VertexArray.h"
 
-#include <cstdint>
-#include <memory>
+#include <lunapch.h>
 
 namespace Luna {
 

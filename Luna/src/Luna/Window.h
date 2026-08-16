@@ -3,7 +3,7 @@
 #include "Luna/Core.h"
 #include "Luna/Events/Event.h"
 
-#include <string>
+#include <lunapch.h>
 
 namespace Luna {
 

@@ -3,9 +3,7 @@
 #include <Luna/Core.h>
 #include <spdlog/fmt/ostr.h>
 
-
-#include <string>
-#include <functional>
+#include <lunapch.h>
 
 namespace Luna {
 

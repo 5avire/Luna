@@ -3,8 +3,7 @@
 #include "Luna/Log.h"
 #include "Luna/Input.h"
 
-#include <string>
-#include <cstdint>
+#include <lunapch.h>
 
 namespace Luna {
 

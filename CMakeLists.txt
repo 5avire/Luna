@@ -15,10 +15,20 @@ if(NOT CMAKE_BUILD_TYPE IN_LIST ALLOWED_BUILD_TYPES)
     message(FATAL_ERROR "Invalid build type '${CMAKE_BUILD_TYPE}'. Allowed types: ${ALLOWED_BUILD_TYPES}")
 endif()
 
-# SPDLOG
+# Platforms Defines
+if (WIN32)
+    add_compile_definitions(LUNA_PLATFORM_WINDOWS)
+elseif (LINUX)
+    add_compile_definitions(LUNA_PLATFORM_LINUX)
+elseif (APPLE)
+    add_compile_definitions(LUNA_PLATFORM_MAC)
+endif()
+
 if(MSVC)
+    # SPDLOG
     add_compile_options(/utf-8)
 endif()
+
 add_compile_options(
     $<$<CONFIG:Debug>:-g>
     $<$<CONFIG:Release>:-O2>

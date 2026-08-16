@@ -9,7 +9,7 @@
 
 #include "Luna/ImGui/ImGuiLayer.h"
 
-#include <memory>
+#include <lunapch.h>
 
 namespace Luna {
 

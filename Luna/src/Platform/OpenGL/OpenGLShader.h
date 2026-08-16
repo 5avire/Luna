@@ -2,7 +2,7 @@
 
 #include "Luna/Renderer/Shader.h"
 
-#include <string>
+#include <lunapch.h>
 
 namespace Luna {
 
