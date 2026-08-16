@@ -1,9 +1,9 @@
 #pragma once
+#include <lunapch.h>
 
 #include <Luna/Core.h>
 #include <spdlog/fmt/ostr.h>
 
-#include <lunapch.h>
 
 namespace Luna {
 

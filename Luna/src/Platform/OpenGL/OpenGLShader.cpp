@@ -1,10 +1,10 @@
+#include <lunapch.h>
 #include "OpenGLShader.h"
 
 #include "Luna/Log.h"
 
 #include <glad/glad.h>
 
-#include <lunapch.h>
 
 namespace Luna {
 

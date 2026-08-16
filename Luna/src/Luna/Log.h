@@ -1,8 +1,8 @@
 #pragma once
+#include <lunapch.h>
 
 #include "Luna/Core.h"
 
-#include <lunapch.h>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>

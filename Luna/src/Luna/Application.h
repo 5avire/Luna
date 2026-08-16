@@ -1,4 +1,5 @@
 #pragma once
+#include <lunapch.h>
 
 #include "Core.h"
 
@@ -9,7 +10,6 @@
 
 #include "Luna/ImGui/ImGuiLayer.h"
 
-#include <lunapch.h>
 
 namespace Luna {
 

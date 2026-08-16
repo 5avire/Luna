@@ -1,9 +1,8 @@
+#include <lunapch.h>
 #include "Application.h"
 
 #include "Luna/Log.h"
 #include "Luna/Input.h"
-
-#include <lunapch.h>
 
 namespace Luna {
 

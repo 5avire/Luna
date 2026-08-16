@@ -1,8 +1,8 @@
 #pragma once
+#include <lunapch.h>
 
 #include "Luna/Renderer/VertexArray.h"
 
-#include <lunapch.h>
 
 namespace Luna {
 

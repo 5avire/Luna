@@ -1,8 +1,8 @@
 #pragma once
+#include <lunapch.h>
 
 #include "Luna/Renderer/Shader.h"
 
-#include <lunapch.h>
 
 namespace Luna {
 

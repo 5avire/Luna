@@ -1,8 +1,8 @@
 #pragma once
+#include <lunapch.h>
 
 #include "Event.h"
 
-#include <lunapch.h>
 
 namespace Luna {
 

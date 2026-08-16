@@ -1,9 +1,9 @@
 #pragma once
+#include <lunapch.h>
 
 #include "Luna/Core.h"
 #include "Luna/Layer.h"
 
-#include <lunapch.h>
 
 namespace Luna {
 
