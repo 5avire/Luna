@@ -12,8 +12,11 @@
 #include <Luna/KeyCodes.h>
 #include <Luna/MouseButtonCodes.h>
 
-// -- Renderer --
+// -- Rendering --
+#include <Luna/Renderer/Shader.h>
+#include <Luna/Renderer/Buffer.h>
 #include <Luna/Renderer/Renderer.h>
+#include <Luna/Renderer/VertexArray.h>
 
 // -- Logging ---
 // Bugs out without ostr sometimes

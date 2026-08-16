@@ -11,10 +11,6 @@
 
 #include <memory>
 
-#include "Luna/Renderer/Shader.h"
-#include "Luna/Renderer/Buffer.h"
-#include "Luna/Renderer/VertexArray.h"
-
 namespace Luna {
 
     class Application
@@ -39,12 +35,6 @@ namespace Luna {
             ImGuiLayer* m_ImGuiLayer;
             bool m_Running = true;
             LayerStack m_LayerStack;
-
-            std::shared_ptr<Shader> m_Shader;
-            std::shared_ptr<VertexArray> m_VertexArray;
-
-            std::shared_ptr<Shader> m_ShaderSq;
-            std::shared_ptr<VertexArray> m_SqVertexArray;
         private:
             static Application* s_Instance;
     };
