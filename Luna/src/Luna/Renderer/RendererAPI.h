@@ -1,10 +1,9 @@
 #pragma once
+#include <lunapch.h>
 
 #include "VertexArray.h"
 
 #include <glm/glm.hpp>
-
-#include <memory>
 
 namespace Luna {
 
