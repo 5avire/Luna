@@ -116,6 +116,8 @@ class ExampleLayer : public Layer
             RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
             RenderCommand::Clear();
 
+            CameraMovement();
+
             m_Camera.SetPosition(m_CameraPos);
             m_Camera.SetRotation(m_CameraRotation);
 
@@ -138,25 +140,23 @@ class ExampleLayer : public Layer
 
         void OnEvent(Event& event) override
         {
-            EventDispatcher dispatcher(event);
-            dispatcher.Dispatch<KeyPressedEvent>(LUNA_BIND_EVENT_FN(ExampleLayer::CameraMovement));
         }
     private:
-        bool CameraMovement(KeyPressedEvent& e)
+        bool CameraMovement()
         {
-            if (e.GetKeyCode() == LunaKey_W)
+            if (Input::IsKeyPressed(LunaKey_S))
+                m_CameraPos.y += 0.4f * 0.016f;
+            if (Input::IsKeyPressed(LunaKey_W))
+                m_CameraPos.y -= 0.4f * 0.016f;
+
+            if (Input::IsKeyPressed(LunaKey_A))
                 m_CameraPos.x += 0.4f * 0.016f;
-            if (e.GetKeyCode() == LunaKey_S)
+            if (Input::IsKeyPressed(LunaKey_D))
                 m_CameraPos.x -= 0.4f * 0.016f;
 
-            if (e.GetKeyCode() == LunaKey_A)
-                m_CameraPos.y += 0.01f * 0.016f;
-            if (e.GetKeyCode() == LunaKey_D)
-                m_CameraPos.y -= 0.01f * 0.016f;
-
-            if (e.GetKeyCode() == LunaKey_E)
+            if (Input::IsKeyPressed(LunaKey_E))
                 m_CameraRotation += 15.0f * 0.016f;
-            if (e.GetKeyCode() == LunaKey_Q)
+            if (Input::IsKeyPressed(LunaKey_Q))
                 m_CameraRotation -= 15.0f * 0.016f;
 
             return true;
