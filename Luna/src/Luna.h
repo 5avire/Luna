@@ -1,5 +1,10 @@
 #pragma once
 
+// -- Core --
+#include <Luna/Core.h>
+#include <Luna/Core/Timestep.h>
+// -- Core --
+
 // -- Application --
 #include <Luna/Application.h>
 // -- Application --

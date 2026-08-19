@@ -3,6 +3,9 @@
 
 #include "Luna/Log.h"
 #include "Luna/Input.h"
+#include "Luna/Core/Timestep.h"
+
+#include <GLFW/glfw3.h>
 
 namespace Luna {
 
@@ -55,9 +58,13 @@ namespace Luna {
     {
         while(m_Running)
         {
+            float time = glfwGetTime();
+            Timestep ts = time - m_LastFrameTime;
+            m_LastFrameTime = time;
+
             // Normal Layers Updates
             for (Layer* layer : m_LayerStack)
-                layer->OnUpdate();
+                layer->OnUpdate(ts);
 
             // ImGui Rendering
             m_ImGuiLayer->Begin();

@@ -1,6 +1,9 @@
 #include <Luna.h>
-#include <glm/glm.hpp>
+
 #include <imgui/imgui.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 class ExampleLayer : public Luna::Layer
 {
@@ -35,10 +38,10 @@ class ExampleLayer : public Luna::Layer
             m_SqVertexArray.reset(Luna::VertexArray::Create());
 
             float sqVertices[4 * 3] = {
-                -0.6f, -0.6f, +0.0f,
-                +0.6f, -0.6f, +0.0f,
-                +0.6f, +0.6f, +0.0f,
-                -0.6f, +0.6f, +0.0f
+                -0.5f, -0.5f, +0.0f,
+                +0.5f, -0.5f, +0.0f,
+                +0.5f, +0.5f, +0.0f,
+                -0.5f, +0.5f, +0.0f
             };
             std::shared_ptr<Luna::VertexBuffer> squareVB(Luna::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
 
@@ -60,11 +63,12 @@ class ExampleLayer : public Luna::Layer
                 out vec4 v_Color;
 
                 uniform mat4 u_ViewProjection;
+                uniform mat4 u_ModelPosition;
 
                 void main()
                 {
                    v_Color = a_Color;
-                   gl_Position = u_ViewProjection * vec4(a_Pos, 1.0f);
+                   gl_Position = u_ViewProjection * u_ModelPosition * vec4(a_Pos, 1.0f);
                 }
             )";
 
@@ -88,10 +92,11 @@ class ExampleLayer : public Luna::Layer
                 layout (location = 0) in vec3 a_Pos;
 
                 uniform mat4 u_ViewProjection;
+                uniform mat4 u_ModelPosition;
 
                 void main()
                 {
-                   gl_Position = u_ViewProjection * vec4(a_Pos, 1.0f);
+                   gl_Position = u_ViewProjection * u_ModelPosition * vec4(a_Pos, 1.0f);
                 }
             )";
 
@@ -102,31 +107,40 @@ class ExampleLayer : public Luna::Layer
 
                 void main()
                 {
-                   color = vec4(0.2f, 0.8f, 1.0f, 1.0f);
+                   color = vec4(0.2f, 0.3f, 0.8f, 1.0f);
                 }
             )";
 
             m_ShaderSq.reset(Luna::Shader::Create(sqVertexShader, sqFragmentShader));
         }
 
-        void OnUpdate() override
+        void OnUpdate(Luna::Timestep ts) override
         {
             Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
             Luna::RenderCommand::Clear();
 
-            CameraMovement();
+            CameraMovement(ts);
 
             m_Camera.SetPosition(m_CameraPos);
             m_Camera.SetRotation(m_CameraRotation);
 
             Luna::Renderer::BeginScene(m_Camera);
 
-            Luna::Renderer::Submit(m_ShaderSq, m_SqVertexArray);
+            glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    glm::vec3 pos(y * 0.11f, x * 0.11f, 0.0f);
+                    glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+                    Luna::Renderer::Submit(m_ShaderSq, m_SqVertexArray, transform);
+                }
+            }
 
             Luna::Renderer::Submit(m_Shader, m_VertexArray);
 
             Luna::Renderer::EndScene();
-
         }
 
         void OnImGuiRender() override
@@ -140,22 +154,22 @@ class ExampleLayer : public Luna::Layer
         {
         }
     private:
-        bool CameraMovement()
+        bool CameraMovement(Luna::Timestep ts)
         {
-            if (Luna::Input::IsKeyPressed(LunaKey_S))
-                m_CameraPos.y += 0.4f * 0.016f;
             if (Luna::Input::IsKeyPressed(LunaKey_W))
-                m_CameraPos.y -= 0.4f * 0.016f;
+                m_CameraPos.y += m_CameraSpeed * ts;
+            else if (Luna::Input::IsKeyPressed(LunaKey_S))
+                m_CameraPos.y -= m_CameraSpeed * ts;
 
             if (Luna::Input::IsKeyPressed(LunaKey_A))
-                m_CameraPos.x += 0.4f * 0.016f;
-            if (Luna::Input::IsKeyPressed(LunaKey_D))
-                m_CameraPos.x -= 0.4f * 0.016f;
+                m_CameraPos.x -= m_CameraSpeed * ts;
+            else if (Luna::Input::IsKeyPressed(LunaKey_D))
+                m_CameraPos.x += m_CameraSpeed * ts;
 
             if (Luna::Input::IsKeyPressed(LunaKey_E))
-                m_CameraRotation += 15.0f * 0.016f;
+                m_CameraRotation += m_CameraRotationSpeed * ts;
             if (Luna::Input::IsKeyPressed(LunaKey_Q))
-                m_CameraRotation -= 15.0f * 0.016f;
+                m_CameraRotation -= m_CameraRotationSpeed * ts;
 
             return true;
         }
@@ -169,6 +183,9 @@ class ExampleLayer : public Luna::Layer
 
         std::shared_ptr<Luna::Shader> m_ShaderSq;
         std::shared_ptr<Luna::VertexArray> m_SqVertexArray;
+
+        float m_CameraSpeed = 1.0f;
+        float m_CameraRotationSpeed = 15.0f;
 };
 
 class Sandbox : public Luna::Application

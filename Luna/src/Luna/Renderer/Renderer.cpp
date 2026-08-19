@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace Luna {
 
     Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
@@ -13,10 +15,11 @@ namespace Luna {
     {
     }
 
-    void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertexArray)
+    void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4 transform)
     {
         shader->Bind();
-        shader->UploadUniformMat4(m_SceneData->ViewProjectionMatrix, "u_ViewProjection");
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(m_SceneData->ViewProjectionMatrix, "u_ViewProjection");
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(transform, "u_ModelPosition");
         RenderCommand::DrawIndexed(vertexArray);
     }
 
