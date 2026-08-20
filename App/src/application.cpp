@@ -123,11 +123,10 @@ class ExampleLayer : public Luna::Layer
             Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
             Luna::RenderCommand::Clear();
 
-            CameraMovement(ts);
             TriangleMovement(ts);
+            lerpCameraToTriangle();
 
-            m_Camera.SetPosition(m_CameraPos);
-            m_Camera.SetRotation(m_CameraRotation);
+            m_Camera.SetPosition(glm::vec3(m_CameraPos[3]));
 
             Luna::Renderer::BeginScene(m_Camera);
 
@@ -167,26 +166,6 @@ class ExampleLayer : public Luna::Layer
         {
         }
     private:
-        bool CameraMovement(Luna::Timestep ts)
-        {
-            if (Luna::Input::IsKeyPressed(LunaKey_W))
-                m_CameraPos.y += m_CameraSpeed * ts;
-            else if (Luna::Input::IsKeyPressed(LunaKey_S))
-                m_CameraPos.y -= m_CameraSpeed * ts;
-
-            if (Luna::Input::IsKeyPressed(LunaKey_A))
-                m_CameraPos.x -= m_CameraSpeed * ts;
-            else if (Luna::Input::IsKeyPressed(LunaKey_D))
-                m_CameraPos.x += m_CameraSpeed * ts;
-
-            if (Luna::Input::IsKeyPressed(LunaKey_E))
-                m_CameraRotation += m_CameraRotationSpeed * ts;
-            if (Luna::Input::IsKeyPressed(LunaKey_Q))
-                m_CameraRotation -= m_CameraRotationSpeed * ts;
-
-            return false;
-        }
-
         bool TriangleMovement(Luna::Timestep ts)
         {
             if (Luna::Input::IsKeyPressed(LunaKey_Up))
@@ -201,9 +180,14 @@ class ExampleLayer : public Luna::Layer
 
             return false;
         }
+
+        void lerpCameraToTriangle()
+        {
+            m_CameraPos = (0.90f * m_CameraPos) + (0.10f * m_TrianglePos);
+        }
     private:
         Luna::CameraOrtho m_Camera;
-        glm::vec3 m_CameraPos = glm::vec3(0.0f);
+        glm::mat4 m_CameraPos = glm::mat4(1.0f);
         float m_CameraRotation = 0.0f;
 
         std::shared_ptr<Luna::Shader> m_Shader;
