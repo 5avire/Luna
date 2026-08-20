@@ -4,6 +4,7 @@
 #include <imgui/imgui.h>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 class ExampleLayer : public Luna::Layer
@@ -106,11 +107,11 @@ class ExampleLayer : public Luna::Layer
 
                 layout (location = 0) out vec4 color;
 
-                uniform vec4 u_Color;
+                uniform vec3 u_Color;
 
                 void main()
                 {
-                   color = u_Color;
+                   color = vec4(u_Color, 1.0);
                 }
             )";
 
@@ -123,16 +124,16 @@ class ExampleLayer : public Luna::Layer
             Luna::RenderCommand::Clear();
 
             CameraMovement(ts);
+            TriangleMovement(ts);
 
             m_Camera.SetPosition(m_CameraPos);
             m_Camera.SetRotation(m_CameraRotation);
 
             Luna::Renderer::BeginScene(m_Camera);
 
-            glm::vec4 blueColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
-            glm::vec4 redColor = glm::vec4(0.8f, 0.3f, 0.2f, 1.0f);
-
             glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+            m_ShaderSq->Bind();
 
             for (int x = 0; x < 20; x++)
             {
@@ -141,16 +142,13 @@ class ExampleLayer : public Luna::Layer
                     glm::vec3 pos(y * 0.11f, x * 0.11f, 0.0f);
                     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 
-                    if (y % 2 == 0)
-                        std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ShaderSq)->UploadUniformFloat4(blueColor, "u_Color");
-                    else
-                        std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ShaderSq)->UploadUniformFloat4(redColor, "u_Color");
+                    std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ShaderSq)->UploadUniformFloat3(m_SquareColor, "u_Color");
 
                     Luna::Renderer::Submit(m_ShaderSq, m_SqVertexArray, transform);
                 }
             }
 
-            Luna::Renderer::Submit(m_Shader, m_VertexArray);
+            Luna::Renderer::Submit(m_Shader, m_VertexArray, m_TrianglePos);
 
             Luna::Renderer::EndScene();
         }
@@ -159,6 +157,9 @@ class ExampleLayer : public Luna::Layer
         {
             ImGui::Begin("Luna-Engine");
             ImGui::Text("Welcome to Luna Engine!!");
+            ImGui::Separator();
+            ImGui::Text("Settings: ");
+            ImGui::ColorEdit3("Squares Color", glm::value_ptr(m_SquareColor));
             ImGui::End();
         }
 
@@ -183,7 +184,22 @@ class ExampleLayer : public Luna::Layer
             if (Luna::Input::IsKeyPressed(LunaKey_Q))
                 m_CameraRotation -= m_CameraRotationSpeed * ts;
 
-            return true;
+            return false;
+        }
+
+        bool TriangleMovement(Luna::Timestep ts)
+        {
+            if (Luna::Input::IsKeyPressed(LunaKey_Up))
+                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(0.0f, 2.0f * ts, 0.0f));
+            else if (Luna::Input::IsKeyPressed(LunaKey_Down))
+                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(0.0f, -2.0f * ts, 0.0f));
+
+            if (Luna::Input::IsKeyPressed(LunaKey_Right))
+                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(2.0f * ts, 0.0f, 0.0f));
+            else if (Luna::Input::IsKeyPressed(LunaKey_Left))
+                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(-2.0f * ts, 0.0f, 0.0f));
+
+            return false;
         }
     private:
         Luna::CameraOrtho m_Camera;
@@ -198,6 +214,9 @@ class ExampleLayer : public Luna::Layer
 
         float m_CameraSpeed = 2.0f;
         float m_CameraRotationSpeed = 90.0f;
+
+        glm::vec3 m_SquareColor = {0.2, 0.3, 0.8};
+        glm::mat4 m_TrianglePos = glm::mat4(1.0f);
 };
 
 class Sandbox : public Luna::Application
