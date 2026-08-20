@@ -1,5 +1,8 @@
 #include <Luna.h>
+
+// -------------- Temporary -------------------
 #include <Platform/OpenGL/OpenGLShader.h>
+// --------------------------------------------
 
 #include <imgui/imgui.h>
 
@@ -21,7 +24,7 @@ class ExampleLayer : public Luna::Layer
                 +0.0f, +0.5f, +0.0f, +0.5f, +1.0f, +0.5f, +1.0f
             };
 
-            std::shared_ptr<Luna::VertexBuffer> vertexBuffer;
+            Luna::Ref<Luna::VertexBuffer> vertexBuffer;
             vertexBuffer.reset(Luna::VertexBuffer::Create(vertices, sizeof(vertices)));
 
             Luna::BufferLayout layout = {
@@ -33,7 +36,7 @@ class ExampleLayer : public Luna::Layer
 
             uint32_t indices[3] = { 0, 1, 2 };
 
-            std::shared_ptr<Luna::IndexBuffer> indexBuffer;
+            Luna::Ref<Luna::IndexBuffer> indexBuffer;
             indexBuffer.reset(Luna::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
             m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -45,7 +48,7 @@ class ExampleLayer : public Luna::Layer
                 +0.5f, +0.5f, +0.0f,
                 -0.5f, +0.5f, +0.0f
             };
-            std::shared_ptr<Luna::VertexBuffer> squareVB(Luna::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
+            Luna::Ref<Luna::VertexBuffer> squareVB(Luna::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
 
             Luna::BufferLayout sqLayout = {
                 { Luna::ShaderDataType::Float3, "a_Pos" },
@@ -54,7 +57,7 @@ class ExampleLayer : public Luna::Layer
             m_SqVertexArray->AddVertexBuffer(squareVB);
 
             uint32_t sqIndices[6] = { 0, 1, 2, 2, 3, 0 };
-            std::shared_ptr<Luna::IndexBuffer> squareIB(Luna::IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
+            Luna::Ref<Luna::IndexBuffer> squareIB(Luna::IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
             m_SqVertexArray->SetIndexBuffer(squareIB);
 
             std::string vertexShader = R"( 
@@ -190,11 +193,11 @@ class ExampleLayer : public Luna::Layer
         glm::mat4 m_CameraPos = glm::mat4(1.0f);
         float m_CameraRotation = 0.0f;
 
-        std::shared_ptr<Luna::Shader> m_Shader;
-        std::shared_ptr<Luna::VertexArray> m_VertexArray;
+        Luna::Ref<Luna::Shader> m_Shader;
+        Luna::Ref<Luna::VertexArray> m_VertexArray;
 
-        std::shared_ptr<Luna::Shader> m_ShaderSq;
-        std::shared_ptr<Luna::VertexArray> m_SqVertexArray;
+        Luna::Ref<Luna::Shader> m_ShaderSq;
+        Luna::Ref<Luna::VertexArray> m_SqVertexArray;
 
         float m_CameraSpeed = 2.0f;
         float m_CameraRotationSpeed = 90.0f;

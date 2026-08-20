@@ -34,6 +34,7 @@ namespace Luna {
 
             virtual unsigned int GetWidth() const = 0;
             virtual unsigned int GetHeight() const = 0;
+            virtual float GetTime() const = 0;
 
             // Attributes
             virtual void SetEventCallback(const EventCallBackFn& callback) = 0;

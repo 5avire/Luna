@@ -5,8 +5,6 @@
 #include "Luna/Input.h"
 #include "Luna/Core/Timestep.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Luna {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -18,7 +16,7 @@ namespace Luna {
         LUNA_CORE_ASSERT(!s_Instance, "Application already exists");
         s_Instance = this;
 
-        m_Window = std::unique_ptr<Window>(Window::Create());
+        m_Window = Scope<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
         m_ImGuiLayer = new ImGuiLayer();
@@ -58,7 +56,7 @@ namespace Luna {
     {
         while(m_Running)
         {
-            float time = glfwGetTime();
+            float time = m_Window->GetTime();
             Timestep ts = time - m_LastFrameTime;
             m_LastFrameTime = time;
 

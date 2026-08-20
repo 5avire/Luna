@@ -17,6 +17,7 @@ namespace Luna {
 
             inline unsigned int GetWidth() const override { return m_Data.Width; }
             inline unsigned int GetHeight() const override { return m_Data.Height; }
+            inline float GetTime() const override { return glfwGetTime(); }
 
             // Window Attribute
             inline void SetEventCallback(const EventCallBackFn& callback) override { m_Data.EventCallBack = callback; }
