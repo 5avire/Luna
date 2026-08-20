@@ -1,4 +1,5 @@
 #include <Luna.h>
+#include <Platform/OpenGL/OpenGLShader.h>
 
 #include <imgui/imgui.h>
 
@@ -105,9 +106,11 @@ class ExampleLayer : public Luna::Layer
 
                 layout (location = 0) out vec4 color;
 
+                uniform vec4 u_Color;
+
                 void main()
                 {
-                   color = vec4(0.2f, 0.3f, 0.8f, 1.0f);
+                   color = u_Color;
                 }
             )";
 
@@ -126,6 +129,9 @@ class ExampleLayer : public Luna::Layer
 
             Luna::Renderer::BeginScene(m_Camera);
 
+            glm::vec4 blueColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
+            glm::vec4 redColor = glm::vec4(0.8f, 0.3f, 0.2f, 1.0f);
+
             glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
             for (int x = 0; x < 20; x++)
@@ -134,6 +140,12 @@ class ExampleLayer : public Luna::Layer
                 {
                     glm::vec3 pos(y * 0.11f, x * 0.11f, 0.0f);
                     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+
+                    if (y % 2 == 0)
+                        std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ShaderSq)->UploadUniformFloat4(blueColor, "u_Color");
+                    else
+                        std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ShaderSq)->UploadUniformFloat4(redColor, "u_Color");
+
                     Luna::Renderer::Submit(m_ShaderSq, m_SqVertexArray, transform);
                 }
             }
@@ -184,8 +196,8 @@ class ExampleLayer : public Luna::Layer
         std::shared_ptr<Luna::Shader> m_ShaderSq;
         std::shared_ptr<Luna::VertexArray> m_SqVertexArray;
 
-        float m_CameraSpeed = 1.0f;
-        float m_CameraRotationSpeed = 15.0f;
+        float m_CameraSpeed = 2.0f;
+        float m_CameraRotationSpeed = 90.0f;
 };
 
 class Sandbox : public Luna::Application
