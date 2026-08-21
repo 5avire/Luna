@@ -24,6 +24,9 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad)
 # imgui
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 
+# stb_image
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb_image)
+
 # glm
 add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE
@@ -36,6 +39,7 @@ target_link_libraries(${PROJECT_NAME}
         glfw
         glad
         spdlog
+        stb_image
     PUBLIC
         imgui
         glm

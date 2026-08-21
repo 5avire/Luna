@@ -16,42 +16,19 @@ class ExampleLayer : public Luna::Layer
         ExampleLayer()
             : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
         {
-            m_VertexArray.reset(Luna::VertexArray::Create());
+            m_SqVertexArray = Luna::VertexArray::Create();
 
-            float vertices[3 * 7] = {
-                -0.5f, -0.5f, +0.0f, -0.0f, -0.0f, +0.5f, +1.0f,
-                +0.5f, -0.5f, +0.0f, +1.0f, -0.0f, +0.5f, +1.0f,
-                +0.0f, +0.5f, +0.0f, +0.5f, +1.0f, +0.5f, +1.0f
-            };
-
-            Luna::Ref<Luna::VertexBuffer> vertexBuffer;
-            vertexBuffer.reset(Luna::VertexBuffer::Create(vertices, sizeof(vertices)));
-
-            Luna::BufferLayout layout = {
-                { Luna::ShaderDataType::Float3, "a_Pos" },
-                { Luna::ShaderDataType::Float4, "a_Color" }
-            };
-            vertexBuffer->SetLayout(layout);
-            m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-            uint32_t indices[3] = { 0, 1, 2 };
-
-            Luna::Ref<Luna::IndexBuffer> indexBuffer;
-            indexBuffer.reset(Luna::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-            m_VertexArray->SetIndexBuffer(indexBuffer);
-
-            m_SqVertexArray.reset(Luna::VertexArray::Create());
-
-            float sqVertices[4 * 3] = {
-                -0.5f, -0.5f, +0.0f,
-                +0.5f, -0.5f, +0.0f,
-                +0.5f, +0.5f, +0.0f,
-                -0.5f, +0.5f, +0.0f
+            float sqVertices[4 * 7] = {
+                -0.5f, -0.5f, +0.0f, 0.0f, 0.0f,
+                +0.5f, -0.5f, +0.0f, 1.0f, 0.0f,
+                +0.5f, +0.5f, +0.0f, 1.0f, 1.0f,
+                -0.5f, +0.5f, +0.0f, 0.0f, 1.0f
             };
             Luna::Ref<Luna::VertexBuffer> squareVB(Luna::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
 
             Luna::BufferLayout sqLayout = {
                 { Luna::ShaderDataType::Float3, "a_Pos" },
+                { Luna::ShaderDataType::Float2, "a_TexCoord" }
             };
             squareVB->SetLayout(sqLayout);
             m_SqVertexArray->AddVertexBuffer(squareVB);
@@ -60,38 +37,41 @@ class ExampleLayer : public Luna::Layer
             Luna::Ref<Luna::IndexBuffer> squareIB(Luna::IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
             m_SqVertexArray->SetIndexBuffer(squareIB);
 
-            std::string vertexShader = R"( 
+            std::string textureVertexShader = R"( 
                 #version 460 core
 
                 layout (location = 0) in vec3 a_Pos;
-                layout (location = 1) in vec4 a_Color;
-                out vec4 v_Color;
+                layout (location = 1) in vec2 a_TexCoord;
+
+                out vec2 v_TexCoord;
 
                 uniform mat4 u_ViewProjection;
                 uniform mat4 u_ModelPosition;
 
                 void main()
                 {
-                   v_Color = a_Color;
+                   v_TexCoord = a_TexCoord;
                    gl_Position = u_ViewProjection * u_ModelPosition * vec4(a_Pos, 1.0f);
                 }
             )";
 
-            std::string fragmentShader = R"( 
+            std::string textureFragmentShader = R"( 
                 #version 460 core
 
                 layout (location = 0) out vec4 color;
-                in vec4 v_Color;
+
+                in vec2 v_TexCoord;
+                uniform sampler2D u_Texture;
 
                 void main()
                 {
-                   color = v_Color;
+                   color = texture(u_Texture, v_TexCoord);
                 }
             )";
 
-            m_Shader.reset(Luna::Shader::Create(vertexShader, fragmentShader));
+            m_TextureShader = Luna::Shader::Create(textureVertexShader, textureFragmentShader);
 
-            std::string sqVertexShader = R"( 
+            std::string colorVertexShader = R"( 
                 #version 460 core
 
                 layout (location = 0) in vec3 a_Pos;
@@ -105,7 +85,7 @@ class ExampleLayer : public Luna::Layer
                 }
             )";
 
-            std::string sqFragmentShader = R"( 
+            std::string colorFragmentShader = R"( 
                 #version 460 core
 
                 layout (location = 0) out vec4 color;
@@ -118,7 +98,12 @@ class ExampleLayer : public Luna::Layer
                 }
             )";
 
-            m_ShaderSq.reset(Luna::Shader::Create(sqVertexShader, sqFragmentShader));
+            m_ColorShader = Luna::Shader::Create(colorVertexShader, colorFragmentShader);
+
+            m_Texture = Luna::Texture2D::Create("Assets/Texture/Checkerboard.png");
+
+            std::dynamic_pointer_cast<Luna::OpenGLShader>(m_TextureShader)->Bind();
+            std::dynamic_pointer_cast<Luna::OpenGLShader>(m_TextureShader)->UploadUniformInt(0, "u_Texture");
         }
 
         void OnUpdate(Luna::Timestep ts) override
@@ -126,8 +111,8 @@ class ExampleLayer : public Luna::Layer
             Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
             Luna::RenderCommand::Clear();
 
-            TriangleMovement(ts);
-            lerpCameraToTriangle();
+            PlayerMovement(ts);
+            lerpCameraToPlayer();
 
             m_Camera.SetPosition(glm::vec3(m_CameraPos[3]));
 
@@ -135,7 +120,7 @@ class ExampleLayer : public Luna::Layer
 
             glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-            m_ShaderSq->Bind();
+            m_ColorShader->Bind();
 
             for (int x = 0; x < 20; x++)
             {
@@ -144,13 +129,15 @@ class ExampleLayer : public Luna::Layer
                     glm::vec3 pos(y * 0.11f, x * 0.11f, 0.0f);
                     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 
-                    std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ShaderSq)->UploadUniformFloat3(m_SquareColor, "u_Color");
+                    std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ColorShader)->Bind();
+                    std::dynamic_pointer_cast<Luna::OpenGLShader>(m_ColorShader)->UploadUniformFloat3(m_SquareColor, "u_Color");
 
-                    Luna::Renderer::Submit(m_ShaderSq, m_SqVertexArray, transform);
+                    Luna::Renderer::Submit(m_ColorShader, m_SqVertexArray, transform);
                 }
             }
 
-            Luna::Renderer::Submit(m_Shader, m_VertexArray, m_TrianglePos);
+            m_Texture->Bind();
+            Luna::Renderer::Submit(m_TextureShader, m_SqVertexArray, m_PlayerPos);
 
             Luna::Renderer::EndScene();
         }
@@ -169,41 +156,42 @@ class ExampleLayer : public Luna::Layer
         {
         }
     private:
-        bool TriangleMovement(Luna::Timestep ts)
+        bool PlayerMovement(Luna::Timestep ts)
         {
             if (Luna::Input::IsKeyPressed(LunaKey_Up))
-                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(0.0f, 2.0f * ts, 0.0f));
+                m_PlayerPos = glm::translate(m_PlayerPos, glm::vec3(0.0f, 2.0f * ts, 0.0f));
             else if (Luna::Input::IsKeyPressed(LunaKey_Down))
-                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(0.0f, -2.0f * ts, 0.0f));
+                m_PlayerPos = glm::translate(m_PlayerPos, glm::vec3(0.0f, -2.0f * ts, 0.0f));
 
             if (Luna::Input::IsKeyPressed(LunaKey_Right))
-                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(2.0f * ts, 0.0f, 0.0f));
+                m_PlayerPos = glm::translate(m_PlayerPos, glm::vec3(2.0f * ts, 0.0f, 0.0f));
             else if (Luna::Input::IsKeyPressed(LunaKey_Left))
-                m_TrianglePos = glm::translate(m_TrianglePos, glm::vec3(-2.0f * ts, 0.0f, 0.0f));
+                m_PlayerPos = glm::translate(m_PlayerPos, glm::vec3(-2.0f * ts, 0.0f, 0.0f));
 
             return false;
         }
 
-        void lerpCameraToTriangle()
+        void lerpCameraToPlayer()
         {
-            m_CameraPos = (0.90f * m_CameraPos) + (0.10f * m_TrianglePos);
+            m_CameraPos = (0.90f * m_CameraPos) + (0.10f * m_PlayerPos);
         }
     private:
+        Luna::Ref<Luna::Shader> m_TextureShader;
+        Luna::Ref<Luna::Shader> m_ColorShader;
+
+        Luna::Ref<Luna::VertexArray> m_SqVertexArray;
+
+        Luna::Ref<Luna::Texture> m_Texture;
+
         Luna::CameraOrtho m_Camera;
         glm::mat4 m_CameraPos = glm::mat4(1.0f);
         float m_CameraRotation = 0.0f;
-
-        Luna::Ref<Luna::Shader> m_Shader;
-        Luna::Ref<Luna::VertexArray> m_VertexArray;
-
-        Luna::Ref<Luna::Shader> m_ShaderSq;
-        Luna::Ref<Luna::VertexArray> m_SqVertexArray;
 
         float m_CameraSpeed = 2.0f;
         float m_CameraRotationSpeed = 90.0f;
 
         glm::vec3 m_SquareColor = {0.2, 0.3, 0.8};
-        glm::mat4 m_TrianglePos = glm::mat4(1.0f);
+        glm::mat4 m_PlayerPos = glm::mat4(1.0f);
 };
 
 class Sandbox : public Luna::Application

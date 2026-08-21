@@ -28,6 +28,7 @@
 // -- Resources --
 #include <Luna/Renderer/Buffer.h>
 #include <Luna/Renderer/Shader.h>
+#include <Luna/Renderer/Texture.h>
 #include <Luna/Renderer/VertexArray.h>
 
 // -- MISC --

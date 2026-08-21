@@ -15,3 +15,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Luna)
+
+add_custom_target(copy_assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/Assets/"
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Assets/"
+    COMMENT "Copying Assets"
+)
+add_dependencies(${PROJECT_NAME} copy_assets)
