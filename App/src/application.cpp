@@ -37,68 +37,9 @@ class ExampleLayer : public Luna::Layer
             Luna::Ref<Luna::IndexBuffer> squareIB(Luna::IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
             m_SqVertexArray->SetIndexBuffer(squareIB);
 
-            std::string textureVertexShader = R"( 
-                #version 460 core
+            m_TextureShader = Luna::Shader::Create("Assets/Shader/TextureShader.glsl");
 
-                layout (location = 0) in vec3 a_Pos;
-                layout (location = 1) in vec2 a_TexCoord;
-
-                out vec2 v_TexCoord;
-
-                uniform mat4 u_ViewProjection;
-                uniform mat4 u_ModelPosition;
-
-                void main()
-                {
-                   v_TexCoord = a_TexCoord;
-                   gl_Position = u_ViewProjection * u_ModelPosition * vec4(a_Pos, 1.0f);
-                }
-            )";
-
-            std::string textureFragmentShader = R"( 
-                #version 460 core
-
-                layout (location = 0) out vec4 color;
-
-                in vec2 v_TexCoord;
-                uniform sampler2D u_Texture;
-
-                void main()
-                {
-                   color = texture(u_Texture, v_TexCoord);
-                }
-            )";
-
-            m_TextureShader = Luna::Shader::Create(textureVertexShader, textureFragmentShader);
-
-            std::string colorVertexShader = R"( 
-                #version 460 core
-
-                layout (location = 0) in vec3 a_Pos;
-
-                uniform mat4 u_ViewProjection;
-                uniform mat4 u_ModelPosition;
-
-                void main()
-                {
-                   gl_Position = u_ViewProjection * u_ModelPosition * vec4(a_Pos, 1.0f);
-                }
-            )";
-
-            std::string colorFragmentShader = R"( 
-                #version 460 core
-
-                layout (location = 0) out vec4 color;
-
-                uniform vec3 u_Color;
-
-                void main()
-                {
-                   color = vec4(u_Color, 1.0);
-                }
-            )";
-
-            m_ColorShader = Luna::Shader::Create(colorVertexShader, colorFragmentShader);
+            m_ColorShader = Luna::Shader::Create("Assets/Shader/ColorShader.glsl");
 
             m_Texture = Luna::Texture2D::Create("Assets/Texture/Checkerboard.png");
             m_TransparentTexture = Luna::Texture2D::Create("Assets/Texture/AwesomeFace.png");
@@ -109,6 +50,8 @@ class ExampleLayer : public Luna::Layer
 
         void OnUpdate(Luna::Timestep ts) override
         {
+            m_FrameTime = ts;
+
             Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
             Luna::RenderCommand::Clear();
 
@@ -150,6 +93,9 @@ class ExampleLayer : public Luna::Layer
         {
             ImGui::Begin("Luna-Engine");
             ImGui::Text("Welcome to Luna Engine!!");
+            ImGui::Separator();
+            ImGui::Text("Frame time: %f s\n", m_FrameTime);
+            ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
             ImGui::Separator();
             ImGui::Text("Settings: ");
             ImGui::ColorEdit3("Squares Color", glm::value_ptr(m_SquareColor));
@@ -196,6 +142,8 @@ class ExampleLayer : public Luna::Layer
 
         glm::vec3 m_SquareColor = {0.2, 0.3, 0.8};
         glm::mat4 m_PlayerPos = glm::mat4(1.0f);
+
+        float m_FrameTime;
 };
 
 class Sandbox : public Luna::Application

@@ -3,12 +3,15 @@
 
 #include "Luna/Renderer/Shader.h"
 
+typedef unsigned int GLenum;
+
 namespace Luna {
 
     class OpenGLShader : public Shader
     {
         public:
             OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+            OpenGLShader(const std::string& pathToFile);
             ~OpenGLShader();
 
             virtual void Bind() const override;
@@ -24,6 +27,10 @@ namespace Luna {
 
             void UploadUniformMat4(const glm::mat4& matrix, const std::string& name);
             void UploadUniformMat3(const glm::mat3& matrix, const std::string& name);
+        private:
+            std::string ReadFile(const std::string& filePath);
+            std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+            void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
         private:
             uint32_t m_RendererID;
     };
