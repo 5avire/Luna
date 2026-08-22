@@ -101,6 +101,7 @@ class ExampleLayer : public Luna::Layer
             m_ColorShader = Luna::Shader::Create(colorVertexShader, colorFragmentShader);
 
             m_Texture = Luna::Texture2D::Create("Assets/Texture/Checkerboard.png");
+            m_TransparentTexture = Luna::Texture2D::Create("Assets/Texture/AwesomeFace.png");
 
             std::dynamic_pointer_cast<Luna::OpenGLShader>(m_TextureShader)->Bind();
             std::dynamic_pointer_cast<Luna::OpenGLShader>(m_TextureShader)->UploadUniformInt(0, "u_Texture");
@@ -137,6 +138,9 @@ class ExampleLayer : public Luna::Layer
             }
 
             m_Texture->Bind();
+            Luna::Renderer::Submit(m_TextureShader, m_SqVertexArray, m_PlayerPos);
+
+            m_TransparentTexture->Bind();
             Luna::Renderer::Submit(m_TextureShader, m_SqVertexArray, m_PlayerPos);
 
             Luna::Renderer::EndScene();
@@ -181,7 +185,7 @@ class ExampleLayer : public Luna::Layer
 
         Luna::Ref<Luna::VertexArray> m_SqVertexArray;
 
-        Luna::Ref<Luna::Texture> m_Texture;
+        Luna::Ref<Luna::Texture> m_Texture, m_TransparentTexture;
 
         Luna::CameraOrtho m_Camera;
         glm::mat4 m_CameraPos = glm::mat4(1.0f);
