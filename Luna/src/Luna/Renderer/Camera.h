@@ -27,7 +27,7 @@ namespace Luna {
 
             void SetProjection(float left, float right, float bottom, float top)
             {
-                m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+                m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -16.0f, 16.0f);
                 RecalculateViewMatrix();
             }
             const glm::mat4 GetProjectionMat() const { return m_ProjectionMatrix; }

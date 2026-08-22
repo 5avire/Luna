@@ -14,7 +14,7 @@ class ExampleLayer : public Luna::Layer
 {
     public:
         ExampleLayer()
-            : Layer("Example"), m_CameraController(1280.0f / 720.0f)
+            : Layer("Example"), m_CameraController(1280.0f / 720.0f, true)
         {
             m_SqVertexArray = Luna::VertexArray::Create();
 
