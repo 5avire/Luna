@@ -11,6 +11,11 @@ namespace Luna {
         RenderCommand::Init(); 
     }
 
+    void Renderer::OnWindowResize(int width, int height)
+    {
+        RenderCommand::SetViewport(0, 0, width, height);
+    }
+
     void Renderer::BeginScene(CameraOrtho& camera)
     {
         m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMat();

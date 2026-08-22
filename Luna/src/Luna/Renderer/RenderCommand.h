@@ -12,6 +12,11 @@ namespace Luna {
                 s_RendererAPI->Init();
             }
 
+            inline static void SetViewport(int x, int y, int width, int height)
+            {
+                s_RendererAPI->SetViewport(x, y, width, height);
+            }
+
             inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
             {
                 s_RendererAPI->DrawIndexed(vertexArray);

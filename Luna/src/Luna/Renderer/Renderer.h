@@ -11,6 +11,8 @@ namespace Luna {
     {
         public:
             static void Init();
+            static void OnWindowResize(int width, int height);
+
             static void BeginScene(CameraOrtho& camera); // TODO: Take all params
             static void EndScene();
 

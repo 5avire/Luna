@@ -46,6 +46,7 @@ namespace Luna {
     {
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
         for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
         {
@@ -63,9 +64,12 @@ namespace Luna {
             Timestep ts = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
-            // Normal Layers Updates
-            for (Layer* layer : m_LayerStack)
-                layer->OnUpdate(ts);
+            if (!m_Minimized)
+            {
+                // Normal Layers Updates
+                for (Layer* layer : m_LayerStack)
+                    layer->OnUpdate(ts);
+            }
 
             // ImGui Rendering
             m_ImGuiLayer->Begin();
@@ -81,5 +85,19 @@ namespace Luna {
     {
         m_Running = false;
         return true;
+    };
+
+    bool Application::OnWindowResize(WindowResizeEvent e)
+    {
+        if (e.GetWidth() == 0 || e.GetHeight() == 0)
+        {
+            m_Minimized = true;
+        }
+        else
+        {
+            m_Minimized = false;
+            Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+        }
+        return false;
     };
 }

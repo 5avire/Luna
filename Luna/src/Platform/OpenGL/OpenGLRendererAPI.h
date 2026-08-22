@@ -8,6 +8,8 @@ namespace Luna {
     {
         public:
             virtual void Init() override;
+            virtual void SetViewport(int x, int y, int width, int height) override;
+
             virtual void SetClearColor(const glm::vec4& color) override;
             virtual void Clear() override;
 

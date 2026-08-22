@@ -16,6 +16,11 @@ namespace Luna {
         glClearColor(color.r, color.g, color.b, color.a);
     }
 
+    void OpenGLRendererAPI::SetViewport(int x, int y, int width, int height)
+    {
+        glViewport(x, y, width, height);
+    }
+
     void OpenGLRendererAPI::Clear()
     {
         glClear(
