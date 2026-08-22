@@ -34,6 +34,7 @@
 #include <Luna/Renderer/Shader.h>
 #include <Luna/Renderer/Camera.h>
 #include <Luna/Renderer/Texture.h>
+#include <Luna/CameraController.h>
 #include <Luna/Renderer/VertexArray.h>
 
 // -- Rendering --

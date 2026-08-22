@@ -1,8 +1,6 @@
 #include <lunapch.h>
 #include "Camera.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
 namespace Luna {
 
     CameraOrtho::CameraOrtho(float left, float right, float bottom, float top)

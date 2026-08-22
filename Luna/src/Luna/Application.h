@@ -10,7 +10,6 @@
 
 #include "Luna/ImGui/ImGuiLayer.h"
 
-
 namespace Luna {
 
     class Application

@@ -14,7 +14,12 @@ Currently tested on Linux. Other platforms may work but are untested.
 ---
 
 ## Building
-Open a terminal in the project root directory.
+First, clone the repository recursively with:
+```
+git clone --recursive https://github.com/5avire/Luna.git
+```
+
+Navigate to the folder, then
 
 ### Automatic
 Run the provided build script:

@@ -14,7 +14,7 @@ class ExampleLayer : public Luna::Layer
 {
     public:
         ExampleLayer()
-            : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+            : Layer("Example"), m_CameraController(1280.0f / 720.0f)
         {
             m_SqVertexArray = Luna::VertexArray::Create();
 
@@ -40,7 +40,6 @@ class ExampleLayer : public Luna::Layer
             m_ShaderLibrary.Load("Assets/Shader/ColorShader.glsl");
             m_ShaderLibrary.Load("Assets/Shader/TextureShader.glsl");
 
-            m_Texture = Luna::Texture2D::Create("Assets/Texture/Checkerboard.png");
             m_TransparentTexture = Luna::Texture2D::Create("Assets/Texture/AwesomeFace.png");
 
             const auto& texShader = m_ShaderLibrary.Get("TextureShader");
@@ -50,17 +49,17 @@ class ExampleLayer : public Luna::Layer
 
         void OnUpdate(Luna::Timestep ts) override
         {
+            // -- Update --
             m_FrameTime = ts;
+            m_CameraController.OnUpdate(ts);
 
+            // -- Render --
             Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
             Luna::RenderCommand::Clear();
 
             PlayerMovement(ts);
-            lerpCameraToPlayer();
 
-            m_Camera.SetPosition(glm::vec3(m_CameraPos[3]));
-
-            Luna::Renderer::BeginScene(m_Camera);
+            Luna::Renderer::BeginScene(m_CameraController.GetCamera());
 
             glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -82,9 +81,6 @@ class ExampleLayer : public Luna::Layer
                 }
             }
 
-            m_Texture->Bind();
-            Luna::Renderer::Submit(texShader, m_SqVertexArray, m_PlayerPos);
-
             m_TransparentTexture->Bind();
             Luna::Renderer::Submit(texShader, m_SqVertexArray, m_PlayerPos);
 
@@ -95,17 +91,17 @@ class ExampleLayer : public Luna::Layer
         {
             ImGui::Begin("Luna-Engine");
             ImGui::Text("Welcome to Luna Engine!!");
-            ImGui::Separator();
+            ImGui::SeparatorText("Info");
             ImGui::Text("Frame time: %f s\n", m_FrameTime);
             ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
-            ImGui::Separator();
-            ImGui::Text("Settings: ");
+            ImGui::SeparatorText("Settings");
             ImGui::ColorEdit3("Squares Color", glm::value_ptr(m_SquareColor));
             ImGui::End();
         }
 
-        void OnEvent(Luna::Event& event) override
+        void OnEvent(Luna::Event& e) override
         {
+            m_CameraController.OnEvent(e);
         }
     private:
         bool PlayerMovement(Luna::Timestep ts)
@@ -122,24 +118,13 @@ class ExampleLayer : public Luna::Layer
 
             return false;
         }
-
-        void lerpCameraToPlayer()
-        {
-            m_CameraPos = (0.90f * m_CameraPos) + (0.10f * m_PlayerPos);
-        }
     private:
+        Luna::CameraOrthoController m_CameraController;
         Luna::ShaderLibrary m_ShaderLibrary;
 
         Luna::Ref<Luna::VertexArray> m_SqVertexArray;
 
-        Luna::Ref<Luna::Texture> m_Texture, m_TransparentTexture;
-
-        Luna::CameraOrtho m_Camera;
-        glm::mat4 m_CameraPos = glm::mat4(1.0f);
-        float m_CameraRotation = 0.0f;
-
-        float m_CameraSpeed = 2.0f;
-        float m_CameraRotationSpeed = 90.0f;
+        Luna::Ref<Luna::Texture> m_TransparentTexture;
 
         glm::vec3 m_SquareColor = {0.2, 0.3, 0.8};
         glm::mat4 m_PlayerPos = glm::mat4(1.0f);
