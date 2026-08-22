@@ -33,7 +33,6 @@ Run the provided build script:
 ```bat
 build.bat
 ```
-##### You can also double click the .bat file via file manager.
 
 ### Manual (All Platforms)
 Configure and build the project:
