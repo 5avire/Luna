@@ -35,7 +35,7 @@ namespace Luna {
     void ShaderLibrary::Add(const Ref<Shader>& shader)
     {
         auto& name = shader->GetName();
-        LUNA_CORE_ASSERT(~Exists(name), "Shader already exists");
+        LUNA_CORE_ASSERT(!Exists(name), "Shader already exists");
         m_Shaders[name] = shader;
     }
 
