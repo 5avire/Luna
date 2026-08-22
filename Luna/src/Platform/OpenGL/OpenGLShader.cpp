@@ -27,9 +27,18 @@ namespace Luna {
         std::string source = ReadFile(pathToFile);
         auto shaderSources = PreProcess(source);
         Compile(shaderSources);
+
+        // Extract name from file path
+        auto lastSlash = pathToFile.find_last_of("/\\");
+        lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+        auto lastDot = pathToFile.rfind('.');
+
+        auto count = lastDot == std::string::npos ? pathToFile.size() - lastSlash : lastDot - lastSlash;
+        m_Name = pathToFile.substr(lastSlash, count);
     }
 
-    OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+    OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+        : m_Name(name)
     {
         std::unordered_map<GLenum, std::string> sources;
         sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -45,7 +54,9 @@ namespace Luna {
     void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
     {
         GLuint program = glCreateProgram();
-        std::vector<GLenum> glShaderID(shaderSources.size());
+        LUNA_CORE_ASSERT(shaderSources.size() <= 2, "Only supports 2 shader per shader instance as of now");
+        std::array<GLenum, 2> glShaderID;
+        int glShaderIDIndex = 0;
 
         for (auto& kv : shaderSources)
         {
@@ -77,7 +88,7 @@ namespace Luna {
                 break;
             }
             glAttachShader(program, shader);
-            glShaderID.push_back(shader);
+            glShaderID[glShaderIDIndex++] = shader;
         }
         glLinkProgram(program);
 
@@ -104,9 +115,7 @@ namespace Luna {
         }
 
         for (auto id : glShaderID)
-        {
             glDetachShader(program, id);
-        }
 
         m_RendererID = program;
     }

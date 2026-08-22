@@ -9,6 +9,10 @@
 #include <Luna/Application.h>
 // -- Application --
 
+// -- Entry Point --
+#include <Luna/EntryPoint.h>
+// -- Entry Point --
+
 // -- Application Layers --
 #include <Luna/Layer.h>
 #include <Luna/ImGui/ImGuiLayer.h>
@@ -28,11 +32,9 @@
 // -- Resources --
 #include <Luna/Renderer/Buffer.h>
 #include <Luna/Renderer/Shader.h>
+#include <Luna/Renderer/Camera.h>
 #include <Luna/Renderer/Texture.h>
 #include <Luna/Renderer/VertexArray.h>
-
-// -- MISC --
-#include <Luna/Renderer/Camera.h>
 
 // -- Rendering --
 
@@ -41,8 +43,3 @@
 #include <spdlog/fmt/ostr.h>
 #include <Luna/Log.h>
 // -- Logging ---
-
-
-// -- Entry Point --
-#include <Luna/EntryPoint.h>
-// -- Entry Point --
