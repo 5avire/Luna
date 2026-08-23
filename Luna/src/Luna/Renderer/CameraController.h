@@ -27,7 +27,7 @@ namespace Luna {
             bool m_Rotation = false;
             float m_ZoomLevel = 1.0f;
 
-            glm::vec3 m_Pos = glm::vec3(1.0f);
+            glm::vec3 m_Pos = glm::vec3(0.0f);
             float m_RotationZ = 0.0f;
 
             float m_CameraSpeed;

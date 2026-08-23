@@ -1,6 +1,7 @@
+# Luna [![License](https://img.shields.io/github/license/5avire/Luna.svg)](https://github.com/5avire/Luna/blob/main/LICENSE)
+
 <div align="center">
 
-# Luna [![License](https://img.shields.io/github/license/5avire/Luna.svg)](https://github.com/5avire/Luna/blob/main/LICENSE)
 ![Luna Logo](./Resources/Images/LunaLogoTransparent.png)
 
 </div>

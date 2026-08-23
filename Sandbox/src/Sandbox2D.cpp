@@ -2,10 +2,7 @@
 
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
-
-// -------------- Temporary -------------------
-#include <Platform/OpenGL/OpenGLShader.h>
-// --------------------------------------------
+#include <glm/gtc/matrix_transform.hpp>
 
 Sandbox2D::Sandbox2D()
     : m_CameraController(1280.0f / 720.0f)
@@ -14,31 +11,12 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-    m_VertexArray = Luna::VertexArray::Create();
-
-    float sqVertices[4 * 3] = {
-        -0.5f, -0.5f, +0.0f,
-        +0.5f, -0.5f, +0.0f,
-        +0.5f, +0.5f, +0.0f,
-        -0.5f, +0.5f, +0.0f
-    };
-    Luna::Ref<Luna::VertexBuffer> squareVB(Luna::VertexBuffer::Create(sqVertices, sizeof(sqVertices)));
-
-    Luna::BufferLayout sqLayout = {
-        { Luna::ShaderDataType::Float3, "a_Pos" },
-    };
-    squareVB->SetLayout(sqLayout);
-    m_VertexArray->AddVertexBuffer(squareVB);
-
-    uint32_t sqIndices[6] = { 0, 1, 2, 2, 3, 0 };
-    Luna::Ref<Luna::IndexBuffer> squareIB(Luna::IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
-    m_VertexArray->SetIndexBuffer(squareIB);
-
-    m_Shader = Luna::Shader::Create("Assets/Shader/ColorShader.glsl");
+    Luna::Renderer2D::Init();
 }
 
 void Sandbox2D::OnDetach()
 {
+    Luna::Renderer2D::Shutdown();
 }
 
 void Sandbox2D::OnUpdate(Luna::Timestep ts)
@@ -51,14 +29,12 @@ void Sandbox2D::OnUpdate(Luna::Timestep ts)
     Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
     Luna::RenderCommand::Clear();
 
-    Luna::Renderer::BeginScene(m_CameraController.GetCamera());
+    Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-    m_Shader->Bind();
-    std::dynamic_pointer_cast<Luna::OpenGLShader>(m_Shader)->UploadUniformFloat4(m_SquareColor, "u_Color");
+    Luna::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.8f, 1.8f}, {0.8f, 0.3f, 0.2f, 1.0f});
+    Luna::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_Rotation), m_SquareColor);
 
-    Luna::Renderer::Submit(m_Shader, m_VertexArray);
-
-    Luna::Renderer::EndScene();
+    Luna::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
@@ -69,7 +45,10 @@ void Sandbox2D::OnImGuiRender()
     ImGui::Text("Frame time: %f s\n", m_FrameTime);
     ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
     ImGui::SeparatorText("Settings");
-    ImGui::ColorEdit4("Squares Color", glm::value_ptr(m_SquareColor));
+    ImGui::SliderFloat("Square Rotation", &m_Rotation, -180.0f, 180.0f);
+    ImGui::SliderFloat2("Square Pos", glm::value_ptr(m_SquarePos), -10.0f, 10.0f);
+    ImGui::SliderFloat2("Square Scale", glm::value_ptr(m_SquareScale), 0.05f, 5.0f);
+    ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
     ImGui::End();
 }
 

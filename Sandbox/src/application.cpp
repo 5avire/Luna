@@ -1,10 +1,6 @@
 #include <Luna.h>
 #include <LunaEntryPoint.h>
 
-// -------------- Temporary -------------------
-#include <Platform/OpenGL/OpenGLShader.h>
-// --------------------------------------------
-
 #include <imgui/imgui.h>
 
 #include "Sandbox2D.h"
@@ -47,7 +43,7 @@ class ExampleLayer : public Luna::Layer
 
             const auto& texShader = m_ShaderLibrary.Get("TextureShader");
             texShader->Bind();
-            std::dynamic_pointer_cast<Luna::OpenGLShader>(texShader)->UploadUniformInt(0, "u_Texture");
+            texShader->SetInt(0, "u_Texture");
         }
 
         void OnUpdate(Luna::Timestep ts) override
@@ -78,7 +74,7 @@ class ExampleLayer : public Luna::Layer
                     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 
                     colorShader->Bind();
-                    std::dynamic_pointer_cast<Luna::OpenGLShader>(colorShader)->UploadUniformFloat3(m_SquareColor, "u_Color");
+                    colorShader->SetFloat4(m_SquareColor, "u_Color");
 
                     Luna::Renderer::Submit(colorShader, m_SqVertexArray, transform);
                 }
@@ -98,7 +94,7 @@ class ExampleLayer : public Luna::Layer
             ImGui::Text("Frame time: %f s\n", m_FrameTime);
             ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
             ImGui::SeparatorText("Settings");
-            ImGui::ColorEdit3("Squares Color", glm::value_ptr(m_SquareColor));
+            ImGui::ColorEdit4("Squares Color", glm::value_ptr(m_SquareColor));
             ImGui::End();
         }
 
@@ -129,7 +125,7 @@ class ExampleLayer : public Luna::Layer
 
         Luna::Ref<Luna::Texture> m_Texture;
 
-        glm::vec3 m_SquareColor = {0.2, 0.3, 0.8};
+        glm::vec4 m_SquareColor = {0.2, 0.3, 0.8, 1.0f};
         glm::mat4 m_PlayerPos = glm::mat4(1.0f);
 
         float m_FrameTime;

@@ -23,6 +23,7 @@
 // -- Rendering --
 // -- API Stuff --
 #include <Luna/Renderer/Renderer.h>
+#include <Luna/Renderer/Renderer2D.h>
 #include <Luna/Renderer/RenderCommand.h>
 
 // -- Resources --

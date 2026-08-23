@@ -1,6 +1,7 @@
+#include <lunapch.h>
 #include "Renderer.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include "Luna/Renderer/Renderer2D.h"
 
 namespace Luna {
 
@@ -9,6 +10,7 @@ namespace Luna {
     void Renderer::Init()
     {
         RenderCommand::Init(); 
+        Renderer2D::Init();
     }
 
     void Renderer::OnWindowResize(int width, int height)
@@ -28,8 +30,8 @@ namespace Luna {
     void Renderer::Submit(const Ref<Shader> shader, const Ref<VertexArray>& vertexArray, const glm::mat4 transform)
     {
         shader->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(m_SceneData->ViewProjectionMatrix, "u_ViewProjection");
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(transform, "u_ModelPosition");
+        shader->SetMat4(m_SceneData->ViewProjectionMatrix, "u_ViewProjection");
+        shader->SetMat4(transform, "u_ModelPosition");
         RenderCommand::DrawIndexed(vertexArray);
     }
 
