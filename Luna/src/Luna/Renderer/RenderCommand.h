@@ -32,7 +32,7 @@ namespace Luna {
                 s_RendererAPI->Clear();
             }
         private:
-            static RendererAPI* s_RendererAPI;
+            static Scope<RendererAPI> s_RendererAPI;
     };
 
 }

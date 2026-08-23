@@ -1,6 +1,9 @@
-# Luna [![License](https://img.shields.io/github/license/5avire/Luna.svg)](https://github.com/5avire/Luna/blob/main/LICENSE)
+<div align="center">
 
+# Luna [![License](https://img.shields.io/github/license/5avire/Luna.svg)](https://github.com/5avire/Luna/blob/main/LICENSE)
 ![Luna Logo](./Resources/Images/LunaLogoTransparent.png)
+
+</div>
 
 A game engine built while following TheCherno's Game Engine series, with additional experimentation and learning along the way.
 Currently focuses primarily on 2D rendering.
