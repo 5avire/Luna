@@ -2,7 +2,7 @@
 #include "Shader.h"
 
 #include "Renderer.h"
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 

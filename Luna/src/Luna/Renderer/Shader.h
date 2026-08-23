@@ -2,7 +2,7 @@
 
 #include <lunapch.h>
 
-#include "Luna/Core.h"
+#include "Luna/Core/Core.h"
 #include <glm/glm.hpp>
 
 namespace Luna {

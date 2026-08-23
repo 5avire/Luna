@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "Luna/Application.h"
+#include "Luna/Core/Application.h"
 
 namespace Luna {
 

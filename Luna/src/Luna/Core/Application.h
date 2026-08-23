@@ -1,10 +1,8 @@
 #pragma once
 #include <lunapch.h>
 
-#include "Core.h"
-
-#include "Luna/Window.h"
-#include "Luna/LayerStack.h"
+#include "Luna/Core/Window.h"
+#include "Luna/Core/LayerStack.h"
 #include "Luna/Events/Event.h"
 #include "Luna/Events/ApplicationEvent.h"
 

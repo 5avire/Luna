@@ -1,6 +1,6 @@
 #include "GlobalWindow.h"
 
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 #include "Luna/Events/KeyEvent.h"
 #include "Luna/Events/MouseEvent.h"
 #include "Luna/Events/ApplicationEvent.h"

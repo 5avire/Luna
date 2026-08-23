@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 
 #include <cstdint>
 #include <vector>

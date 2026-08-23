@@ -37,4 +37,4 @@ add_compile_options(
 add_compile_definitions(LUNA_FORCE_X11)
 
 add_subdirectory(Luna)
-add_subdirectory(App)
+add_subdirectory(Sandbox)

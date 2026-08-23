@@ -1,8 +1,8 @@
 #include <lunapch.h>
 #include "Application.h"
 
-#include "Luna/Log.h"
-#include "Luna/Input.h"
+#include "Luna/Core/Log.h"
+#include "Luna/Core/Input.h"
 #include "Luna/Core/Timestep.h"
 #include "Luna/Renderer/Renderer.h"
 
@@ -19,6 +19,7 @@ namespace Luna {
 
         m_Window = Scope<Window>(Window::Create());
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+        m_Window->SetVSync(true);
 
         Renderer::Init();
 

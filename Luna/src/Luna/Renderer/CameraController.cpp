@@ -1,10 +1,10 @@
 #include <lunapch.h>
 #include "CameraController.h"
 
-#include "Luna/Core.h"
-#include "Luna/Input.h"
-#include "Luna/KeyCodes.h"
-#include "Luna/MouseButtonCodes.h"
+#include "Luna/Core/Core.h"
+#include "Luna/Core/Input.h"
+#include "Luna/Core/KeyCodes.h"
+#include "Luna/Core/MouseButtonCodes.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

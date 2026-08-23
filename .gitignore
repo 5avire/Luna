@@ -2,4 +2,5 @@
 /compile_commands.json
 /build/
 /.vscode/
-/random.md
+/.idea/
+/.cache/

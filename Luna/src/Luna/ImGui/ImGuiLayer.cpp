@@ -6,9 +6,9 @@
 
 #include "JetBrainMonoFont.embeded"
 
-#include "Luna/Log.h"
-#include "Luna/Core.h"
-#include "Luna/Application.h"
+#include "Luna/Core/Log.h"
+#include "Luna/Core/Core.h"
+#include "Luna/Core/Application.h"
 
 // Temp
 #include <glad/glad.h>

@@ -1,6 +1,6 @@
 #include "Buffer.h"
 
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 #include "Renderer.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"

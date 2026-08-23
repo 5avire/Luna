@@ -1,6 +1,6 @@
 #include "OpenGLContext.h"
 
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"

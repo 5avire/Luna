@@ -40,7 +40,7 @@ class ExampleLayer : public Luna::Layer
             m_ShaderLibrary.Load("Assets/Shader/ColorShader.glsl");
             m_ShaderLibrary.Load("Assets/Shader/TextureShader.glsl");
 
-            m_TransparentTexture = Luna::Texture2D::Create("Assets/Texture/AwesomeFace.png");
+            m_Texture = Luna::Texture2D::Create("Assets/Texture/LunaLogo.png");
 
             const auto& texShader = m_ShaderLibrary.Get("TextureShader");
             texShader->Bind();
@@ -81,7 +81,7 @@ class ExampleLayer : public Luna::Layer
                 }
             }
 
-            m_TransparentTexture->Bind();
+            m_Texture->Bind();
             Luna::Renderer::Submit(texShader, m_SqVertexArray, m_PlayerPos);
 
             Luna::Renderer::EndScene();
@@ -124,7 +124,7 @@ class ExampleLayer : public Luna::Layer
 
         Luna::Ref<Luna::VertexArray> m_SqVertexArray;
 
-        Luna::Ref<Luna::Texture> m_TransparentTexture;
+        Luna::Ref<Luna::Texture> m_Texture;
 
         glm::vec3 m_SquareColor = {0.2, 0.3, 0.8};
         glm::mat4 m_PlayerPos = glm::mat4(1.0f);

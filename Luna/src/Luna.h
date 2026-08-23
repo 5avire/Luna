@@ -1,27 +1,27 @@
 #pragma once
 
 // -- Core --
-#include <Luna/Core.h>
+#include <Luna/Core/Core.h>
 #include <Luna/Core/Timestep.h>
 // -- Core --
 
-// -- Application --
-#include <Luna/Application.h>
-// -- Application --
+// -- Entry Point --
+#include <Luna/Core/EntryPoint.h>
+// -- Entry Point --
 
-// -- Entry Point --
-#include <Luna/EntryPoint.h>
-// -- Entry Point --
+// -- Application --
+#include <Luna/Core/Application.h>
+// -- Application --
 
 // -- Application Layers --
-#include <Luna/Layer.h>
+#include <Luna/Core/Layer.h>
 #include <Luna/ImGui/ImGuiLayer.h>
 // -- Application Layers --
 
 // -- Inputs --
-#include <Luna/Input.h>
-#include <Luna/KeyCodes.h>
-#include <Luna/MouseButtonCodes.h>
+#include <Luna/Core/Input.h>
+#include <Luna/Core/KeyCodes.h>
+#include <Luna/Core/MouseButtonCodes.h>
 // -- Inputs --
 
 // -- Rendering --
@@ -34,13 +34,12 @@
 #include <Luna/Renderer/Shader.h>
 #include <Luna/Renderer/Camera.h>
 #include <Luna/Renderer/Texture.h>
-#include <Luna/CameraController.h>
 #include <Luna/Renderer/VertexArray.h>
-
+#include <Luna/Renderer/CameraController.h>
 // -- Rendering --
 
 // -- Logging ---
 // Bugs out without ostr sometimes
 #include <spdlog/fmt/ostr.h>
-#include <Luna/Log.h>
+#include <Luna/Core/Log.h>
 // -- Logging ---

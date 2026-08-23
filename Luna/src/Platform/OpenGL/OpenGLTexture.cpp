@@ -1,7 +1,7 @@
 #include <lunapch.h>
 #include "OpenGLTexture.h"
 
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 
 #include <glad/glad.h>
 

@@ -15,7 +15,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <Luna/Core/Log.h>
 
 #ifdef LUNA_PLATFORM_WINDOWS
-    #include <Windows.h>
+    #include <windows.h>
 #endif

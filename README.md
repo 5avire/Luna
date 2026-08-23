@@ -1,10 +1,16 @@
-# LunaEngine
+# Luna [![License](https://img.shields.io/github/license/5avire/Luna.svg)](https://github.com/5avire/Luna/blob/main/LICENSE)
+
+![Luna Logo](./Resources/Images/LunaLogoTransparent.png)
+
 A game engine built while following TheCherno's Game Engine series, with additional experimentation and learning along the way.
+Currently focuses primarily on 2D rendering.
 
 ---
 
 ## Platform Support
-Currently tested on Linux. Other platforms may work but are untested.
+
+- Linux — tested
+- Other platform may/may not work.
 
 ## Requirements
 - CMake 3.16 or newer
@@ -13,7 +19,7 @@ Currently tested on Linux. Other platforms may work but are untested.
 
 ---
 
-## Building
+## Configuring for compiling:
 First, clone the repository recursively with:
 ```
 git clone --recursive https://github.com/5avire/Luna.git
@@ -22,26 +28,30 @@ git clone --recursive https://github.com/5avire/Luna.git
 Navigate to the folder, then
 
 ### Automatic
-Run the provided build script:
+Run the provided build script via terminal / command prompt from project root:
 
 #### Linux
 ```sh
-./build.sh
+./scripts/Linux-Generate.sh
 ```
 
 #### Windows
 ```bat
-build.bat
+scripts\Win-Generate.bat
 ```
+You can also double click on windows to launch it.
 
 ### Manual (All Platforms)
 Configure and build the project:
 
 ```sh
-cmake -S . -B build && cmake --build build
+cmake -S . -B build
 ```
-The compiled binaries will be placed in the `bin/` directory.
 
 ---
 ## Note
-I use AI as a learning aid to help explain concepts and summarize documentation, particularly when official documentation is lengthy. The code itself is written by me as part of the learning process rather than copied from AI-generated solutions.
+This is a learning experience from the tutorial until a certain point from where I will diverge off and start adding more things.
+
+## Plans after the series ends
+* Implement proper 3D rendering as series focuses on Renderer 2D.
+* Learn and implement Vulkan backend.

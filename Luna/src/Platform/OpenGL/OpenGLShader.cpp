@@ -1,7 +1,7 @@
 #include <lunapch.h>
 #include "OpenGLShader.h"
 
-#include "Luna/Log.h"
+#include "Luna/Core/Log.h"
 
 #include <glm/gtc/type_ptr.hpp>
 

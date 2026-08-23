@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Luna/Input.h"
+#include "Luna/Core/Input.h"
 
 namespace Luna {
 

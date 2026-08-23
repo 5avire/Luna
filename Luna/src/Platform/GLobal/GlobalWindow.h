@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Luna/Window.h"
+#include "Luna/Core/Window.h"
 #include "Luna/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

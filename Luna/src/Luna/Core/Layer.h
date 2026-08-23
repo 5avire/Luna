@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Luna/Core.h"
+#include "Luna/Core/Core.h"
 #include "Luna/Events/Event.h"
 #include "Luna/Core/Timestep.h"
 
