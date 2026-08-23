@@ -13,8 +13,8 @@ namespace Luna {
     struct Renderer2DData
     {
         Ref<VertexArray> QuadVertexArray;
-        Ref<Shader> ColorShader;
-        Ref<Shader> TextureShader;
+        Ref<Shader> ColorTextureShader;
+        Ref<Texture2D> WhiteTexture;
     };
 
     static Renderer2DData* s_Renderer2DState;
@@ -43,10 +43,13 @@ namespace Luna {
         Ref<IndexBuffer> squareIB(IndexBuffer::Create(sqIndices, sizeof(sqIndices) / sizeof(uint32_t)));
         s_Renderer2DState->QuadVertexArray->SetIndexBuffer(squareIB);
 
-        s_Renderer2DState->ColorShader = Shader::Create("Assets/Shader/ColorShader.glsl");
-        s_Renderer2DState->TextureShader = Shader::Create("Assets/Shader/TextureShader.glsl");
+        s_Renderer2DState->WhiteTexture = Texture2D::Create(1, 1);
+        uint32_t texData = 0xffffffff;
+        s_Renderer2DState->WhiteTexture->SetData(&texData, sizeof(texData));
 
-        s_Renderer2DState->TextureShader->SetInt(0, "u_Texture");
+        s_Renderer2DState->ColorTextureShader = Shader::Create("Assets/Shader/ColorTextureShader.glsl");
+
+        s_Renderer2DState->ColorTextureShader->SetInt(0, "u_Texture");
     }
 
     void Renderer2D::Shutdown()
@@ -61,11 +64,8 @@ namespace Luna {
 
     void Renderer2D::BeginScene(const CameraOrtho& camera)
     {
-        s_Renderer2DState->ColorShader->Bind();
-        s_Renderer2DState->ColorShader->SetMat4(camera.GetViewProjectionMat(), "u_ViewProjection");
-
-        s_Renderer2DState->TextureShader->Bind();
-        s_Renderer2DState->TextureShader->SetMat4(camera.GetViewProjectionMat(), "u_ViewProjection");
+        s_Renderer2DState->ColorTextureShader->Bind();
+        s_Renderer2DState->ColorTextureShader->SetMat4(camera.GetViewProjectionMat(), "u_ViewProjection");
     }
 
     void Renderer2D::EndScene()
@@ -89,27 +89,16 @@ namespace Luna {
 
     void Renderer2D::DrawQuad(const glm::vec3& position,const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture)
     {
-        if (texture == nullptr)
-        {
-            s_Renderer2DState->ColorShader->Bind();
-            s_Renderer2DState->ColorShader->SetFloat4(color, "u_Color");
-            s_Renderer2DState->ColorShader->SetMat4(
-                    glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), {size, 1.0f}),
-                    "u_ModelPosition"
-            );
-            RenderCommand::DrawIndexed(s_Renderer2DState->QuadVertexArray);
-        }
-        else
-        {
-            s_Renderer2DState->TextureShader->Bind();
-            s_Renderer2DState->TextureShader->SetFloat4(color, "u_Color");
-            s_Renderer2DState->TextureShader->SetMat4(
-                    glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), {size, 1.0f}),
-                    "u_ModelPosition"
-            );
-            texture->Bind();
-            RenderCommand::DrawIndexed(s_Renderer2DState->QuadVertexArray);
-        }
+        const Ref<Texture2D>& tex = texture ? texture : s_Renderer2DState->WhiteTexture;
+
+        tex->Bind();
+        s_Renderer2DState->ColorTextureShader->Bind();
+        s_Renderer2DState->ColorTextureShader->SetFloat4(color, "u_Color");
+        s_Renderer2DState->ColorTextureShader->SetMat4(
+                glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), {size, 1.0f}),
+                "u_ModelPosition"
+        );
+        RenderCommand::DrawIndexed(s_Renderer2DState->QuadVertexArray);
     }
 
     void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture)
@@ -129,27 +118,16 @@ namespace Luna {
 
     void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color, const Ref<Texture2D>& texture)
     {
-        if (texture == nullptr)
-        {
-            s_Renderer2DState->ColorShader->Bind();
-            s_Renderer2DState->ColorShader->SetFloat4(color, "u_Color");
-            s_Renderer2DState->ColorShader->SetMat4(
-                    glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f}) * glm::scale(glm::mat4(1.0f), {size, 1.0f}),
-                    "u_ModelPosition"
-            );
-            RenderCommand::DrawIndexed(s_Renderer2DState->QuadVertexArray);
-        }
-        else
-        {
-            s_Renderer2DState->TextureShader->Bind();
-            s_Renderer2DState->TextureShader->SetFloat4(color, "u_Color");
-            s_Renderer2DState->TextureShader->SetMat4(
-                    glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f}) * glm::scale(glm::mat4(1.0f), {size, 1.0f}),
-                    "u_ModelPosition"
-            );
-            texture->Bind();
-            RenderCommand::DrawIndexed(s_Renderer2DState->QuadVertexArray);
-        }
+        const Ref<Texture2D>& tex = texture ? texture : s_Renderer2DState->WhiteTexture;
+
+        tex->Bind();
+        s_Renderer2DState->ColorTextureShader->Bind();
+        s_Renderer2DState->ColorTextureShader->SetFloat4(color, "u_Color");
+        s_Renderer2DState->ColorTextureShader->SetMat4(
+                glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f}) * glm::scale(glm::mat4(1.0f), {size, 1.0f}),
+                "u_ModelPosition"
+        );
+        RenderCommand::DrawIndexed(s_Renderer2DState->QuadVertexArray);
     }
 
 }
