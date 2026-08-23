@@ -18,7 +18,11 @@ class Sandbox2D : public Luna::Layer
         Luna::Ref<Luna::VertexArray> m_VertexArray;
         Luna::CameraOrthoController m_CameraController;
 
-        glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.7f, 1.0f };
+        Luna::Ref<Luna::Texture2D> m_Texture;
+        Luna::Ref<Luna::Texture2D> m_CheckeredTexture;
+
+
+        glm::vec4 m_QuadColor = { 0.2f, 0.3f, 0.8f, 1.0f };
         glm::vec2 m_SquarePos = { 0.0f, 0.0f };
         glm::vec2 m_SquareScale = { 1.0f, 1.0f };
         float m_Rotation = 0.0f;

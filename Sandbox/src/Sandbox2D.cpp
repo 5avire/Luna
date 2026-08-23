@@ -12,6 +12,8 @@ Sandbox2D::Sandbox2D()
 void Sandbox2D::OnAttach()
 {
     Luna::Renderer2D::Init();
+    m_Texture = Luna::Texture2D::Create("Assets/Texture/LunaLogo.png");
+    m_CheckeredTexture = Luna::Texture2D::Create("Assets/Texture/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -31,8 +33,9 @@ void Sandbox2D::OnUpdate(Luna::Timestep ts)
 
     Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-    Luna::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.8f, 1.8f}, {0.8f, 0.3f, 0.2f, 1.0f});
-    Luna::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_Rotation), m_SquareColor);
+    Luna::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_Rotation), m_QuadColor);
+    Luna::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.5f, 0.8f}, glm::radians(0.0f), {0.8f, 0.3f, 0.2f, 1.0f});
+    Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {100.0f, 100.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckeredTexture);
 
     Luna::Renderer2D::EndScene();
 }
@@ -48,7 +51,7 @@ void Sandbox2D::OnImGuiRender()
     ImGui::SliderFloat("Square Rotation", &m_Rotation, -180.0f, 180.0f);
     ImGui::SliderFloat2("Square Pos", glm::value_ptr(m_SquarePos), -10.0f, 10.0f);
     ImGui::SliderFloat2("Square Scale", glm::value_ptr(m_SquareScale), 0.05f, 5.0f);
-    ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+    ImGui::ColorEdit4("Square Color", glm::value_ptr(m_QuadColor));
     ImGui::End();
 }
 
