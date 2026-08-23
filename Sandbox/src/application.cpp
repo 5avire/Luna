@@ -1,10 +1,13 @@
 #include <Luna.h>
+#include <LunaEntryPoint.h>
 
 // -------------- Temporary -------------------
 #include <Platform/OpenGL/OpenGLShader.h>
 // --------------------------------------------
 
 #include <imgui/imgui.h>
+
+#include "Sandbox2D.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,7 +21,7 @@ class ExampleLayer : public Luna::Layer
         {
             m_SqVertexArray = Luna::VertexArray::Create();
 
-            float sqVertices[4 * 7] = {
+            float sqVertices[4 * 5] = {
                 -0.5f, -0.5f, +0.0f, 0.0f, 0.0f,
                 +0.5f, -0.5f, +0.0f, 1.0f, 0.0f,
                 +0.5f, +0.5f, +0.0f, 1.0f, 1.0f,
@@ -137,7 +140,8 @@ class Sandbox : public Luna::Application
     public:
         Sandbox()
         {
-            PushLayer(new ExampleLayer());
+            // PushLayer(new ExampleLayer());
+            PushLayer(new Sandbox2D());
         }
 
         ~Sandbox()

@@ -5,10 +5,6 @@
 #include <Luna/Core/Timestep.h>
 // -- Core --
 
-// -- Entry Point --
-#include <Luna/Core/EntryPoint.h>
-// -- Entry Point --
-
 // -- Application --
 #include <Luna/Core/Application.h>
 // -- Application --

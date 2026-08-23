@@ -6,7 +6,7 @@
 
 namespace Luna {
 
-    Input* Input::s_Instance = new GlobalInput();
+    Scope<Input> Input::s_Instance = CreateScope<GlobalInput>();
 
     bool GlobalInput::IsKeyPressedImpl(int keycode)
     {
