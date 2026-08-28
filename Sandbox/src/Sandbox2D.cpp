@@ -47,7 +47,7 @@ void Sandbox2D::OnUpdate(Luna::Timestep ts)
 
         Luna::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_Rotation), m_QuadColor);
         Luna::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.5f, 0.8f}, glm::radians(0.0f), {0.8f, 0.3f, 0.2f, 1.0f});
-        Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {100.0f, 100.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckeredTexture);
+        Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {100.0f, 100.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckeredTexture, 100.0f);
 
         Luna::Renderer2D::EndScene();
     }

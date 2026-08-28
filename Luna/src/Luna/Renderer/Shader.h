@@ -21,6 +21,7 @@ namespace Luna {
             virtual void SetFloat3(const glm::vec3& value, const std::string& name) = 0;
             virtual void SetMat4(const glm::mat4& matrix, const std::string& name) = 0;
             virtual void SetInt(const int value, const std::string& name) = 0;
+            virtual void SetFloat(const float value, const std::string& name) = 0;
 
             static Ref<Shader> Create(const std::string& pathToShader);
             static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);

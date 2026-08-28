@@ -213,6 +213,13 @@ namespace Luna {
         UploadUniformInt(value, name);
     }
 
+    void OpenGLShader::SetFloat(const float value, const std::string& name)
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        UploadUniformFloat(value, name);
+    }
+
     void OpenGLShader::UploadUniformMat4(const glm::mat4& matrix, const std::string& name)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());

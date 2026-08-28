@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Luna Logo](./Resources/Images/LunaLogoTransparent.png)
+![Luna Logo](./Resources/Images/LunaLogo.png)
 
 </div>
 

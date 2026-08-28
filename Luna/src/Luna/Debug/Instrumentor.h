@@ -203,7 +203,6 @@ namespace Luna {
 	}
 }
 
-#define LUNA_PROFILE 1
 #if LUNA_PROFILE
 	// Resolve which function signature macro will be used. Note that this only
 	// is resolved when the (pre)compiler starts, so the syntax highlighting
