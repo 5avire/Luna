@@ -28,27 +28,37 @@ namespace Luna {
 
     OpenGLVertexArray::OpenGLVertexArray()
     {
+        LUNA_PROFILE_FUNCTION();
+
         glCreateVertexArrays(1, &m_RendererID);
         glBindVertexArray(0);
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()
     {
+        LUNA_PROFILE_FUNCTION();
+
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
     void OpenGLVertexArray::Bind() const 
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindVertexArray(m_RendererID);
     }
 
     void OpenGLVertexArray::Unbind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindVertexArray(0);
     }
 
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
+        LUNA_PROFILE_FUNCTION();
+
         LUNA_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no Layout");
 
         glBindVertexArray(m_RendererID);
@@ -74,6 +84,8 @@ namespace Luna {
 
     void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindVertexArray(m_RendererID);
         indexBuffer->Bind();
         m_IndexBuffer = indexBuffer;

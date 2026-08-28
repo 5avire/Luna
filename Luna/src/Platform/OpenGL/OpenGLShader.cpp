@@ -24,6 +24,8 @@ namespace Luna {
 
     OpenGLShader::OpenGLShader(const std::string& pathToFile)
     {
+        LUNA_PROFILE_FUNCTION();
+
         std::string source = ReadFile(pathToFile);
         auto shaderSources = PreProcess(source);
         Compile(shaderSources);
@@ -40,6 +42,8 @@ namespace Luna {
     OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
         : m_Name(name)
     {
+        LUNA_PROFILE_FUNCTION();
+
         std::unordered_map<GLenum, std::string> sources;
         sources[GL_VERTEX_SHADER] = vertexSrc;
         sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -122,6 +126,8 @@ namespace Luna {
 
     std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
     {
+        LUNA_PROFILE_FUNCTION();
+
         std::unordered_map<GLenum, std::string> shaderSources;
 
         const char* typeToken = "#type";
@@ -167,12 +173,44 @@ namespace Luna {
 
     void OpenGLShader::Bind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glUseProgram(m_RendererID);
     }
 
     void OpenGLShader::Unbind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glUseProgram(0);
+    }
+
+    void OpenGLShader::SetFloat4(const glm::vec4& value, const std::string& name) 
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        UploadUniformFloat4(value, name);
+    }
+
+    void OpenGLShader::SetFloat3(const glm::vec3& value, const std::string& name)
+    { 
+        LUNA_PROFILE_FUNCTION();
+
+        UploadUniformFloat3(value, name);
+    }
+
+    void OpenGLShader::SetMat4(const glm::mat4& matrix, const std::string& name)
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        UploadUniformMat4(matrix, name);
+    }
+
+    void OpenGLShader::SetInt(const int value, const std::string& name)
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        UploadUniformInt(value, name);
     }
 
     void OpenGLShader::UploadUniformMat4(const glm::mat4& matrix, const std::string& name)

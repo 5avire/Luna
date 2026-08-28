@@ -1,5 +1,6 @@
 #include "GlobalWindow.h"
 
+#include "Luna/Core/Core.h"
 #include "Luna/Core/Log.h"
 #include "Luna/Events/KeyEvent.h"
 #include "Luna/Events/MouseEvent.h"
@@ -10,10 +11,11 @@
 namespace Luna {
 
     static bool s_GLFWInitialized = false;
+    static int s_GLFWWindowCount = 0;
 
-    Window* Window::Create(const WindowProps& props)
+    Scope<Window> Window::Create(const WindowProps& props)
     {
-        return new GlobalWindow(props);
+        return CreateScope<GlobalWindow>(props);
     }
 
     static void GLFWErrorCallback(int error, const char* description)
@@ -23,16 +25,22 @@ namespace Luna {
 
     GlobalWindow::GlobalWindow(const WindowProps& props)
     {
+        LUNA_PROFILE_FUNCTION();
+
         Init(props);
     }
 
     GlobalWindow::~GlobalWindow()
     {
+        LUNA_PROFILE_FUNCTION();
+
         Shutdown();
     }
 
     void GlobalWindow::Init(const WindowProps& props)
     {
+        LUNA_PROFILE_FUNCTION();
+
         m_Data.Title = props.Title;
         m_Data.Width = props.Width;
         m_Data.Height = props.Height;
@@ -52,6 +60,7 @@ namespace Luna {
             s_GLFWInitialized = true;
         }
         m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+        s_GLFWWindowCount++;
 
         m_Context = CreateScope<OpenGLContext>(m_Window);
         m_Context->Init();
@@ -151,19 +160,29 @@ namespace Luna {
         });
     }
 
+    void GlobalWindow::Shutdown()
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        glfwDestroyWindow(m_Window);
+        --s_GLFWWindowCount;
+
+        if (s_GLFWWindowCount == 0)
+        {
+            glfwTerminate();
+        }
+    }
+
     void GlobalWindow::OnUpdate()
     {
         glfwPollEvents();
         m_Context->SwapBuffers();
     }
 
-    void GlobalWindow::Shutdown()
-    {
-        glfwDestroyWindow(m_Window);
-    }
-
     void GlobalWindow::SetVSync(bool enabled)
     {
+        LUNA_PROFILE_FUNCTION();
+
         if (enabled)
             glfwSwapInterval(1);
         else

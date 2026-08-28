@@ -9,6 +9,8 @@ namespace Luna {
 
     void Renderer::Init()
     {
+        LUNA_PROFILE_FUNCTION();
+
         RenderCommand::Init(); 
         Renderer2D::Init();
     }

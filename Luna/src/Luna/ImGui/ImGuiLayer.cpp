@@ -27,6 +27,8 @@ namespace Luna {
 
     void ImGuiLayer::OnAttach()
     {
+        LUNA_PROFILE_FUNCTION();
+
         Application& app = Application::Get();
         GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
         float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor()); // Valid on GLFW 3.3+ only
@@ -151,6 +153,8 @@ namespace Luna {
 
     void ImGuiLayer::OnDetach()
     {
+        LUNA_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -162,6 +166,8 @@ namespace Luna {
 
     void ImGuiLayer::Begin()
     {
+        LUNA_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -169,6 +175,8 @@ namespace Luna {
 
     void ImGuiLayer::End()
     {
+        LUNA_PROFILE_FUNCTION();
+
         ImGuiIO& io = ImGui::GetIO();
         Application& app = Application::Get();
         io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());

@@ -8,6 +8,8 @@ namespace Luna {
 
     OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
     {
+        LUNA_PROFILE_FUNCTION();
+
         glCreateBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
@@ -20,11 +22,15 @@ namespace Luna {
 
     void OpenGLVertexBuffer::Bind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }
 
     void OpenGLVertexBuffer::Unbind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -33,6 +39,8 @@ namespace Luna {
     OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* vertices, uint32_t count)
         : m_Count(count)
     {
+        LUNA_PROFILE_FUNCTION();
+
         glCreateBuffers(1, &m_RendererID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), vertices, GL_STATIC_DRAW);
@@ -50,11 +58,15 @@ namespace Luna {
 
     void OpenGLIndexBuffer::Bind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
     void OpenGLIndexBuffer::Unbind() const
     {
+        LUNA_PROFILE_FUNCTION();
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 

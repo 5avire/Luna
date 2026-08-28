@@ -14,10 +14,11 @@ namespace Luna {
 
     Application::Application()
     {
+        LUNA_PROFILE_FUNCTION();
         LUNA_CORE_ASSERT(!s_Instance, "Application already exists");
         s_Instance = this;
 
-        m_Window = Scope<Window>(Window::Create());
+        m_Window = Window::Create();
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
         Renderer::Init();
@@ -32,14 +33,34 @@ namespace Luna {
 
     void Application::PushLayer(Layer* layer)
     {
+        LUNA_PROFILE_FUNCTION();
+
         m_LayerStack.PushLayer(layer);
         layer->OnAttach();
     }
 
     void Application::PushOverlay(Layer* layer)
     {
+        LUNA_PROFILE_FUNCTION();
+
         m_LayerStack.PushOverlay(layer);
         layer->OnAttach();
+    }
+
+    void Application::PopLayer(Layer* layer)
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        m_LayerStack.PopLayer(layer);
+        layer->OnDetach();
+    }
+
+    void Application::PopOverlay(Layer* layer)
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        m_LayerStack.PopOverlay(layer);
+        layer->OnDetach();
     }
 
     void Application::OnEvent(Event& e)
@@ -58,24 +79,34 @@ namespace Luna {
 
     void Application::Run()
     {
+        LUNA_PROFILE_FUNCTION();
+
         while(m_Running)
         {
+            LUNA_PROFILE_SCOPE("RunLoop");
+
             float time = m_Window->GetTime();
             Timestep ts = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
             if (!m_Minimized)
             {
-                // Normal Layers Updates
-                for (Layer* layer : m_LayerStack)
-                    layer->OnUpdate(ts);
-            }
+                {
+                    LUNA_PROFILE_SCOPE("Layerstack layers update");
+                    // Normal Layers Updates
+                    for (Layer* layer : m_LayerStack)
+                        layer->OnUpdate(ts);
+                }
 
-            // ImGui Rendering
-            m_ImGuiLayer->Begin();
-            for (Layer* layer : m_LayerStack)
-                layer->OnImGuiRender();
-            m_ImGuiLayer->End();
+                {
+                    LUNA_PROFILE_SCOPE("ImGui layer update");
+                    // ImGui Rendering
+                    m_ImGuiLayer->Begin();
+                    for (Layer* layer : m_LayerStack)
+                        layer->OnImGuiRender();
+                    m_ImGuiLayer->End();
+                }
+            }
 
             m_Window->OnUpdate();
         }
@@ -89,6 +120,8 @@ namespace Luna {
 
     bool Application::OnWindowResize(WindowResizeEvent e)
     {
+        LUNA_PROFILE_FUNCTION();
+
         if (e.GetWidth() == 0 || e.GetHeight() == 0)
         {
             m_Minimized = true;

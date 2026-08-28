@@ -16,6 +16,7 @@
 #include <unordered_set>
 
 #include <Luna/Core/Log.h>
+#include <Luna/Debug/Instrumentor.h>
 
 #ifdef LUNA_PLATFORM_WINDOWS
     #include <windows.h>

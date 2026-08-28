@@ -21,6 +21,8 @@ namespace Luna {
 
     void Renderer2D::Init()
     {
+        LUNA_PROFILE_FUNCTION();
+
         s_Renderer2DState = new Renderer2DData();
         s_Renderer2DState->QuadVertexArray = VertexArray::Create();
 
@@ -54,6 +56,8 @@ namespace Luna {
 
     void Renderer2D::Shutdown()
     {
+        LUNA_PROFILE_FUNCTION();
+
         delete s_Renderer2DState;
     }
 
@@ -64,12 +68,15 @@ namespace Luna {
 
     void Renderer2D::BeginScene(const CameraOrtho& camera)
     {
+        LUNA_PROFILE_FUNCTION();
+
         s_Renderer2DState->ColorTextureShader->Bind();
         s_Renderer2DState->ColorTextureShader->SetMat4(camera.GetViewProjectionMat(), "u_ViewProjection");
     }
 
     void Renderer2D::EndScene()
     {
+        LUNA_PROFILE_FUNCTION();
     }
 
     void Renderer2D::DrawQuad(const glm::vec2& position,const glm::vec2& size, const Ref<Texture2D>& texture)
@@ -89,6 +96,8 @@ namespace Luna {
 
     void Renderer2D::DrawQuad(const glm::vec3& position,const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture)
     {
+        LUNA_PROFILE_FUNCTION();
+
         const Ref<Texture2D>& tex = texture ? texture : s_Renderer2DState->WhiteTexture;
 
         tex->Bind();
@@ -118,6 +127,8 @@ namespace Luna {
 
     void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color, const Ref<Texture2D>& texture)
     {
+        LUNA_PROFILE_FUNCTION();
+
         const Ref<Texture2D>& tex = texture ? texture : s_Renderer2DState->WhiteTexture;
 
         tex->Bind();

@@ -21,10 +21,10 @@ namespace Luna {
             virtual const std::string& GetName() const override { return m_Name; }
 
             // Uniforms, maybe be temp, may be not
-            virtual void SetFloat4(const glm::vec4& value, const std::string& name) override { UploadUniformFloat4(value, name); }
-            virtual void SetFloat3(const glm::vec3& value, const std::string& name) override { UploadUniformFloat3(value, name); }
-            virtual void SetMat4(const glm::mat4& matrix, const std::string& name) override { UploadUniformMat4(matrix, name); }
-            virtual void SetInt(const int value, const std::string& name) override { UploadUniformInt(value, name); }
+            virtual void SetFloat4(const glm::vec4& value, const std::string& name) override;
+            virtual void SetFloat3(const glm::vec3& value, const std::string& name) override;
+            virtual void SetMat4(const glm::mat4& matrix, const std::string& name) override;
+            virtual void SetInt(const int value, const std::string& name) override;
 
             void UploadUniformFloat4(const glm::vec4& value, const std::string& name);
             void UploadUniformFloat3(const glm::vec3& value, const std::string& name);

@@ -25,11 +25,7 @@ namespace Luna {
             }
             const float GetRotation() const { return m_Rotation; }
 
-            void SetProjection(float left, float right, float bottom, float top)
-            {
-                m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -16.0f, 16.0f);
-                RecalculateViewMatrix();
-            }
+            void SetProjection(float left, float right, float bottom, float top);
             const glm::mat4 GetProjectionMat() const { return m_ProjectionMatrix; }
 
             const glm::mat4 GetViewMat() const { return m_ViewMatrix; }
