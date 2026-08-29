@@ -81,17 +81,17 @@ namespace Luna {
 
     void Renderer2D::DrawQuad(const glm::vec2& position,const glm::vec2& size, const Ref<Texture2D>& texture, const float tilingFactor)
     {
-        DrawQuad({position.x, position.y, 0.0f}, size, glm::vec4(1.0f), texture);
+        DrawQuad({position.x, position.y, 0.0f}, size, glm::vec4(1.0f), texture, tilingFactor);
     }
 
     void Renderer2D::DrawQuad(const glm::vec3& position,const glm::vec2& size, const Ref<Texture2D>& texture, const float tilingFactor)
     {
-        DrawQuad(position, size, {1.0f, 1.0f, 1.0f, 1.0f}, texture);
+        DrawQuad(position, size, {1.0f, 1.0f, 1.0f, 1.0f}, texture, tilingFactor);
     }
 
     void Renderer2D::DrawQuad(const glm::vec2& position,const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture, const float tilingFactor)
     {
-        DrawQuad({position.x, position.y, 0.0f}, size, color, texture);
+        DrawQuad({position.x, position.y, 0.0f}, size, color, texture, tilingFactor);
     }
 
     void Renderer2D::DrawQuad(const glm::vec3& position,const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture, const float tilingFactor)
@@ -113,17 +113,17 @@ namespace Luna {
 
     void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const float tilingFactor)
     {
-        DrawRotatedQuad({position.x, position.y, 0.0f}, size, rotation, {1.0f, 1.0f, 1.0f, 1.0f}, texture);
+        DrawRotatedQuad({position.x, position.y, 0.0f}, size, rotation, {1.0f, 1.0f, 1.0f, 1.0f}, texture, tilingFactor);
     }
 
     void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const float tilingFactor)
     {
-        DrawRotatedQuad(position, size, rotation, {1.0f, 1.0f, 1.0f, 1.0f}, texture);
+        DrawRotatedQuad(position, size, rotation, {1.0f, 1.0f, 1.0f, 1.0f}, texture, tilingFactor);
     }
 
     void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const glm::vec4& color, const Ref<Texture2D>& texture, const float tilingFactor)
     {
-        DrawRotatedQuad({position.x, position.y, 0.0f}, size, rotation, color, texture);
+        DrawRotatedQuad({position.x, position.y, 0.0f}, size, rotation, color, texture, tilingFactor);
     }
 
     void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color, const Ref<Texture2D>& texture, const float tilingFactor)
