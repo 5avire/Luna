@@ -37,12 +37,14 @@ void Sandbox2D::OnUpdate(Luna::Timestep ts)
     // -- Render --
     {
         LUNA_PROFILE_SCOPE("Renderer Prep");
+
         Luna::RenderCommand::SetClearColor({0.15f, 0.15f, 0.15f, 1.00f});
         Luna::RenderCommand::Clear();
     }
 
     {
         LUNA_PROFILE_SCOPE("Renderer Draw");
+
         Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
         Luna::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_Rotation), m_QuadColor);
