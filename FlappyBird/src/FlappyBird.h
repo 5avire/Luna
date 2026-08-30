@@ -34,6 +34,8 @@ class FlappyBird : public Luna::Layer
         std::vector<glm::vec2> m_PipePos;
         float m_SpeedFactor = 1.0f;
 
+        bool m_Start = false;
+
         float m_BirdCurrYOffset = 0.0f;
         float m_BirdYOffset = 0.0f;
 

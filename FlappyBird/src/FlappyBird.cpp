@@ -41,37 +41,6 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
     // -- Update --
     m_FrameTime = ts;
 
-    static float counter = 0;
-    counter += ts;
-
-    if (counter > 1.5f / m_ScrollSpeed)
-    {
-        std::uniform_real_distribution<float> randGen(-0.5f, 0.5f);
-        float yOffset = randGen(gen);
-
-        m_PipePos.push_back(
-            glm::vec2(m_ZoomLevel * m_AspectRatio + 0.2f, yOffset)
-        );
-
-        counter = 0;
-        if (m_ScrollSpeed != 3.0f)
-        {
-            m_ScrollSpeed = 1.001f * m_ScrollSpeed;
-            if (m_ScrollSpeed >= 3.0f)
-                m_ScrollSpeed = 3.0f;
-        }
-    }
-
-    m_BirdYOffset -= 10.0f * ts * m_SpeedFactor * m_FrameTime;
-    m_SpeedFactor += 1.0f * ts;
-
-    LerpBirdToExpectedPos();
-
-    // Colission
-    // With top and bottom
-    if (m_BirdCurrYOffset >= (0.95f - 0.25f + 0.12f / 2.0f) || m_BirdCurrYOffset <= (-0.95f + 0.25f - 0.12f / 2.0f))
-        Luna::Application::Get().Close();
-
     // -- Render --
     Luna::RenderCommand::SetClearColor({0.1f, 0.1f, 0.5f, 1.00f});
     Luna::RenderCommand::Clear();
@@ -81,29 +50,63 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
     // Background
     Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {4.0f, 2.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_Background, 1.0f);
 
-    // Pipe
-    for (int index = 0; index < m_PipePos.size();)
+    if (m_Start)
     {
-        float& pipePos = m_PipePos[index].x;
-        float& yOffset = m_PipePos[index].y;
+        static float counter = 0;
+        counter += ts;
 
-        const float gapY = 0.3f;
-
-        Luna::Renderer2D::DrawRotatedQuad({pipePos, -1.0f - gapY + yOffset}, {0.25f, 2.0f}, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0f);
-        Luna::Renderer2D::DrawRotatedQuad({pipePos, +1.0f + gapY + yOffset}, {0.25f, 2.0f}, -3.14159f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0);
-
-        pipePos -= m_ScrollSpeed * ts;
-
-        if (pipePos <= -(m_AspectRatio * m_ZoomLevel + 0.2f))
-            m_PipePos.erase(m_PipePos.begin() + index);
-        else
-            index++;
-
-        // Colission with pipes
-        if (((pipePos + 0.25/2.0f) > -(0.12f/2.0f)) && ((pipePos - 0.25/2.0f) < +(0.12f/2.0f)))
+        if (counter > 1.5f / m_ScrollSpeed)
         {
-            if (!(m_BirdCurrYOffset <= (yOffset + gapY - 0.12f/2.0f) && m_BirdCurrYOffset >= (yOffset - gapY + 0.12f/2.0f)))
-                Luna::Application::Get().Close();
+            std::uniform_real_distribution<float> randGen(-0.5f, 0.5f);
+            float yOffset = randGen(gen);
+
+            m_PipePos.push_back(
+                glm::vec2(m_ZoomLevel * m_AspectRatio + 0.2f, yOffset)
+            );
+
+            counter = 0;
+            if (m_ScrollSpeed != 3.0f)
+            {
+                m_ScrollSpeed = 1.001f * m_ScrollSpeed;
+                if (m_ScrollSpeed >= 3.0f)
+                    m_ScrollSpeed = 3.0f;
+            }
+        }
+
+        m_BirdYOffset -= 10.0f * ts * m_SpeedFactor * m_FrameTime;
+        m_SpeedFactor += 1.0f * ts;
+
+        LerpBirdToExpectedPos();
+
+        // Colission
+        // With top and bottom
+        if (m_BirdCurrYOffset >= (0.95f - 0.25f + 0.12f / 2.0f) || m_BirdCurrYOffset <= (-0.95f + 0.25f - 0.12f / 2.0f))
+            Luna::Application::Get().Close();
+
+        // Pipe
+        for (int index = 0; index < m_PipePos.size();)
+        {
+            float& pipePos = m_PipePos[index].x;
+            float& yOffset = m_PipePos[index].y;
+
+            const float gapY = 0.3f;
+
+            Luna::Renderer2D::DrawRotatedQuad({pipePos, -1.0f - gapY + yOffset}, {0.25f, 2.0f}, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0f);
+            Luna::Renderer2D::DrawRotatedQuad({pipePos, +1.0f + gapY + yOffset}, {0.25f, 2.0f}, -3.14159f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0);
+
+            pipePos -= m_ScrollSpeed * ts;
+
+            if (pipePos <= -(m_AspectRatio * m_ZoomLevel + 0.2f))
+                m_PipePos.erase(m_PipePos.begin() + index);
+            else
+                index++;
+
+            // Colission with pipes
+            if (((pipePos + 0.25/2.0f) > -(0.12f/2.0f)) && ((pipePos - 0.25/2.0f) < +(0.12f/2.0f)))
+            {
+                if (!(m_BirdCurrYOffset <= (yOffset + gapY - 0.12f/2.0f) && m_BirdCurrYOffset >= (yOffset - gapY + 0.12f/2.0f)))
+                    Luna::Application::Get().Close();
+            }
         }
     }
 
@@ -119,6 +122,7 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
     );
 
     Luna::Renderer2D::EndScene();
+
 }
 
 void FlappyBird::OnImGuiRender()
@@ -127,8 +131,6 @@ void FlappyBird::OnImGuiRender()
 
 void FlappyBird::OnEvent(Luna::Event& event)
 {
-    m_CameraController.OnEvent(event);
-
     Luna::EventDispatcher dispatcher(event);
     dispatcher.Dispatch<Luna::KeyPressedEvent>(LUNA_BIND_EVENT_FN(FlappyBird::OnKeyPressed));
     dispatcher.Dispatch<Luna::MouseButtonPressedEvent>(LUNA_BIND_EVENT_FN(FlappyBird::OnMouseButtonPressed));
@@ -138,6 +140,9 @@ bool FlappyBird::OnKeyPressed(Luna::KeyPressedEvent& event)
 {
     if (event.GetKeyCode() == LunaKey_Space)
     {
+        if (!m_Start)
+            m_Start = true;
+
         m_BirdYOffset += 12.0f * m_FrameTime * (m_SpeedFactor > 1.5f ? 1.5f : m_SpeedFactor);
         m_SpeedFactor = 1.0f;
     }
@@ -148,6 +153,9 @@ bool FlappyBird::OnMouseButtonPressed(Luna::MouseButtonPressedEvent& event)
 {
     if (event.GetMouseButton() == LunaMouseButton_1)
     {
+        if (!m_Start)
+            m_Start = true;
+
         m_BirdYOffset += 12.0f * m_FrameTime * (m_SpeedFactor > 1.5f ? 1.5f : m_SpeedFactor);
         m_SpeedFactor = 1.0f;
     }
