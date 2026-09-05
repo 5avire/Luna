@@ -2,19 +2,26 @@
 #version 460 core
 
 layout (location = 0) in vec3 a_Pos;
-layout (location = 1) in vec2 a_TexCoord;
+layout (location = 1) in vec4 a_Color;
+layout (location = 2) in vec2 a_TexCoord;
+layout (location = 3) in float a_TilingFactor;
+layout (location = 4) in float a_TexID;
 
 out vec2 v_TexCoord;
+out vec4 v_Color;
+out float v_TilingFactor;
+out float v_TexID;
 
 uniform mat4 u_ViewProjection;
-uniform mat4 u_ModelPosition;
 
 void main()
 {
    v_TexCoord = a_TexCoord;
-   gl_Position = u_ViewProjection * u_ModelPosition * vec4(a_Pos, 1.0f);
+   v_Color = a_Color;
+   v_TilingFactor = a_TilingFactor;
+   v_TexID = a_TexID;
+   gl_Position = u_ViewProjection * vec4(a_Pos, 1.0f);
 }
-
 
 
 #type fragment
@@ -23,12 +30,13 @@ void main()
 layout (location = 0) out vec4 color;
 
 in vec2 v_TexCoord;
+in vec4 v_Color;
+in float v_TilingFactor;
+in float v_TexID;
 
-uniform vec4 u_Color;
-uniform float u_TilingFactor;
-uniform sampler2D u_Texture;
+uniform sampler2D u_Texture[32];
 
 void main()
 {
-   color = texture(u_Texture, v_TexCoord * u_TilingFactor) * u_Color;
+   color = texture(u_Texture[int(v_TexID)], v_TexCoord * v_TilingFactor) * v_Color;
 }

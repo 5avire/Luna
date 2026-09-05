@@ -47,9 +47,9 @@ void Sandbox2D::OnUpdate(Luna::Timestep ts)
 
         Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        Luna::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_Rotation), m_QuadColor);
+        Luna::Renderer2D::DrawRotatedQuad(m_QuadPos, m_QuadSize, m_Rotation, m_QuadColor);
         Luna::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.5f, 0.8f}, glm::radians(0.0f), {0.8f, 0.3f, 0.2f, 1.0f});
-        Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {100.0f, 100.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckeredTexture, 100.0f);
+        Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -1.0f}, {100.0f, 100.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckeredTexture, 100.0f);
 
         Luna::Renderer2D::EndScene();
     }
@@ -65,10 +65,10 @@ void Sandbox2D::OnImGuiRender()
     ImGui::Text("Frame time: %f s\n", m_FrameTime);
     ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
     ImGui::SeparatorText("Settings");
-    ImGui::SliderFloat("Square Rotation", &m_Rotation, -180.0f, 180.0f);
-    ImGui::SliderFloat2("Square Pos", glm::value_ptr(m_SquarePos), -10.0f, 10.0f);
-    ImGui::SliderFloat2("Square Scale", glm::value_ptr(m_SquareScale), 0.05f, 5.0f);
-    ImGui::ColorEdit4("Square Color", glm::value_ptr(m_QuadColor));
+    ImGui::DragFloat("Quad Rotation", &m_Rotation, 0.1f);
+    ImGui::DragFloat2("Quad Pos", glm::value_ptr(m_QuadPos), 0.1f);
+    ImGui::DragFloat2("Quad Scale", glm::value_ptr(m_QuadSize), 0.1f);
+    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadColor));
     ImGui::End();
 }
 

@@ -95,4 +95,13 @@ namespace Luna {
         glBindTextureUnit(slot, m_RendererID);
     }
 
+    const uint32_t OpenGLTexture2D::GetRendererID() const
+    {
+        return m_RendererID;
+    }
+
+    bool OpenGLTexture2D::operator=(const Texture& other) const
+    {
+        return m_RendererID == ((OpenGLTexture2D&)other).m_RendererID;
+    }
 }

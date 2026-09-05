@@ -26,6 +26,7 @@ namespace Luna {
             virtual void SetMat4(const glm::mat4& matrix, const std::string& name) override;
             virtual void SetInt(const int value, const std::string& name) override;
             virtual void SetFloat(const float value, const std::string& name) override;
+            virtual void SetIntArray(int* values, uint32_t count, const std::string& name) override;
 
             void UploadUniformFloat4(const glm::vec4& value, const std::string& name);
             void UploadUniformFloat3(const glm::vec3& value, const std::string& name);
@@ -34,6 +35,8 @@ namespace Luna {
 
             void UploadUniformBool(const bool& value, const std::string& name);
             void UploadUniformInt(const int& value, const std::string& name);
+
+            void UploadUniformIntArray(int* values, uint32_t count, const std::string& name);
 
             void UploadUniformMat4(const glm::mat4& matrix, const std::string& name);
             void UploadUniformMat3(const glm::mat3& matrix, const std::string& name);
