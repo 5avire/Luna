@@ -1,4 +1,4 @@
-# Luna [![License](https://img.shields.io/github/license/5avire/Luna.svg)](https://github.com/5avire/Luna/blob/main/LICENSE)
+# Luna [![License](https://img.shields.io/github/license/SavvyNotFound/Luna.svg)](https://github.com/SavvyNotFound/Luna/blob/main/LICENSE)
 
 <div align="center">
 
@@ -26,7 +26,7 @@ Currently focuses primarily on 2D rendering.
 ## Configuring for compiling:
 First, clone the repository recursively with:
 ```
-git clone --recursive https://github.com/5avire/Luna.git
+git clone --recursive https://github.com/SavvyNotFound/Luna.git
 ```
 
 Navigate to the folder, then
