@@ -52,9 +52,9 @@ void Sandbox2D::OnUpdate(Luna::Timestep ts)
         Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
         Luna::Renderer2D::DrawRotatedQuad(m_QuadPos, m_QuadSize, m_Rotation, m_QuadColor);
-        Luna::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {0.5f, 0.8f}, glm::radians(0.0f), m_LunaLogo);
+        Luna::Renderer2D::DrawRotatedQuad({-1.0f, 0.0f}, {1.5f, 1.5f}, glm::radians(0.0f), m_LunaLogo);
         Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -1.0f}, {25.0f, 25.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_CheckeredTexture, 10.0f);
-        Luna::Renderer2D::DrawQuad({-1.0f, -1.0f}, {0.5f, 0.8f}, {0.8f, 0.3f, 0.2f, 1.0f});
+        Luna::Renderer2D::DrawQuad({-1.0f, -1.0f}, {0.5f, 0.5f}, {0.8f, 0.3f, 0.2f, 1.0f});
 
         Luna::Renderer2D::DrawQuad({3.0f, 0.0f, 0.1f}, {1.5f, 1.5f}, m_StairLTR);
 
@@ -79,26 +79,34 @@ void Sandbox2D::OnImGuiRender()
     LUNA_PROFILE_FUNCTION();
     Luna::Renderer2D::Statistics stats = Luna::Renderer2D::GetStats();
 
-    ImGui::Begin("Luna-Engine");
-    ImGui::Text("Sandbox2D Test");
-    ImGui::SeparatorText("Info");
-    ImGui::Text("Frame time: %f s\n", m_FrameTime);
-    ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
-    ImGui::Text("Draw call: %u", stats.DrawCalls);
-    ImGui::Text("Quad count: %u", stats.QuadCount);
-    ImGui::Text("Vertex count: %u", stats.GetTotalVertexCount());
-    ImGui::Text("Index count: %u", stats.GetTotalIndexCount());
-    ImGui::End();
-
-    ImGui::Begin("Quad Properties");
-    ImGui::DragFloat("Quad Rotation", &m_Rotation, 0.1f);
-    ImGui::DragFloat2("Quad Pos", glm::value_ptr(m_QuadPos), 0.1f);
-    ImGui::DragFloat2("Quad Scale", glm::value_ptr(m_QuadSize), 0.1f);
-    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadColor));
-    ImGui::End();
+    if (showRendererStat)
+    {
+        ImGui::Begin("Luna-Engine");
+        ImGui::Text("Sandbox2D Test");
+        ImGui::SeparatorText("Info");
+        ImGui::Text("Frame time: %f s\n", m_FrameTime);
+        ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
+        ImGui::Text("Draw call: %u", stats.DrawCalls);
+        ImGui::Text("Quad count: %u", stats.QuadCount);
+        ImGui::Text("Vertex count: %u", stats.GetTotalVertexCount());
+        ImGui::Text("Index count: %u", stats.GetTotalIndexCount());
+        ImGui::End();
+    }
 }
 
 void Sandbox2D::OnEvent(Luna::Event& event)
 {
     m_CameraController.OnEvent(event);
+
+    Luna::EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<Luna::KeyPressedEvent>(LUNA_BIND_EVENT_FN(Sandbox2D::OnKeyPressed));
+}
+
+bool Sandbox2D::OnKeyPressed(Luna::KeyPressedEvent& e)
+{
+    if (e.GetKeyCode() == LunaKey_Tab)
+    {
+        showRendererStat = !showRendererStat;
+    }
+    return false;
 }

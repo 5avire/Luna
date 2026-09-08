@@ -13,7 +13,7 @@ namespace Luna {
     class Application
     {
         public:
-            Application();
+            Application(const std::string& name = "Luna Application");
             virtual ~Application();
 
             void Run();
@@ -39,6 +39,7 @@ namespace Luna {
             bool m_Minimized = false;
             LayerStack m_LayerStack;
             float m_LastFrameTime;
+            std::string m_Name;
         private:
             static Application* s_Instance;
     };

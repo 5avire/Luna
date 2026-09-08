@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#ifdef _WIN32
+#ifdef LUNA_PLATFORM_WINDOWS
     #define LUNA_DEBUGBREAK() __debugbreak()
-#elif defined(__linux__)
+#elif defined(LUNA_PLATFORM_LINUX)
     #include <csignal>
     #define LUNA_DEBUGBREAK() raise(SIGTRAP)
 #else

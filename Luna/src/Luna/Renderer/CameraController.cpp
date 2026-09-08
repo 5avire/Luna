@@ -41,6 +41,12 @@ namespace Luna {
         m_Camera.SetPosition(m_Pos);
     }
 
+    void CameraOrthoController::Resize(float width, float height)
+    {
+        m_AspectRatio = width / height;
+        m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+    }
+
     void CameraOrthoController::OnEvent(Event& e)
     {
         EventDispatcher dispatcher(e);
@@ -60,8 +66,9 @@ namespace Luna {
     
     bool CameraOrthoController::OnWindowResized(WindowResizeEvent& e)
     {
-        m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-        m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+
+        Resize((float)e.GetWidth(), (float)e.GetHeight());
+
         return false;
     }
 

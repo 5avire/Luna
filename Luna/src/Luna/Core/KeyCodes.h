@@ -53,7 +53,7 @@
 #define LunaKey_World2             162 /* non-US #2 */
 
 /* Function keys */
-#define LunaKey_Espace             256
+#define LunaKey_Escape             256
 #define LunaKey_Enter              257
 #define LunaKey_Tab                258
 #define LunaKey_Backspace          259

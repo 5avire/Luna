@@ -17,6 +17,8 @@ namespace Luna {
             void OnUpdate(Timestep ts);
             void OnEvent(Event& e);
 
+            void Resize(float width, float height);
+
             CameraOrtho& GetCamera() { return m_Camera; }
             const CameraOrtho& GetCamera() const { return m_Camera; }
         private:

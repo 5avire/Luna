@@ -14,8 +14,9 @@ class Sandbox2D : public Luna::Layer
         virtual void OnImGuiRender() override;
         virtual void OnEvent(Luna::Event& event) override;
     private:
+        bool OnKeyPressed(Luna::KeyPressedEvent& e);
+    private:
         Luna::Ref<Luna::Shader> m_Shader;
-        Luna::Ref<Luna::VertexArray> m_VertexArray;
         Luna::CameraOrthoController m_CameraController;
 
         Luna::Ref<Luna::Texture2D> m_Texture;
@@ -23,6 +24,7 @@ class Sandbox2D : public Luna::Layer
         Luna::Ref<Luna::Texture2D> m_CheckeredTexture;
 
         Luna::Ref<Luna::SubTexture2D> m_StairLTR;
+        bool showRendererStat = false;
 
         glm::vec4 m_QuadColor = { 0.2f, 0.3f, 0.8f, 1.0f };
         glm::vec2 m_QuadPos = { 0.0f, 0.0f };
