@@ -14,6 +14,7 @@ class FlappyBird : public Luna::Layer
         virtual void OnImGuiRender() override;
         virtual void OnEvent(Luna::Event& event) override;
     private:
+        void Flap();
         bool OnKeyPressed(Luna::KeyPressedEvent& event);
         bool OnMouseButtonPressed(Luna::MouseButtonPressedEvent& event);
 
@@ -33,11 +34,16 @@ class FlappyBird : public Luna::Layer
 
         std::vector<glm::vec2> m_PipePos;
         float m_SpeedFactor = 1.0f;
+        float m_PipeSpawnTimer = 0.0f;
 
         bool m_Start = false;
+        bool m_Paused = false;
+        bool m_ShowDebug = false;
 
+        float m_BirdGravity = 0.4f;
         float m_BirdCurrYOffset = 0.0f;
         float m_BirdYOffset = 0.0f;
+        float m_GapBetweenPipe = 0.6f;
 
         float m_ScrollSpeed = 0.5f;
 

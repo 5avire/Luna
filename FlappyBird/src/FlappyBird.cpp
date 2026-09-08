@@ -6,7 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <cmath>
 
 std::random_device rd;
 std::mt19937 gen(rd());
@@ -42,20 +41,17 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
     m_FrameTime = ts;
 
     // -- Render --
+    Luna::Renderer2D::ResetStats();
     Luna::RenderCommand::SetClearColor({0.1f, 0.1f, 0.5f, 1.00f});
     Luna::RenderCommand::Clear();
 
-    Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
     // Background
-    Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {4.0f, 2.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_Background, 1.0f);
 
-    if (m_Start)
+    if (m_Start && !m_Paused)
     {
-        static float counter = 0;
-        counter += ts;
+        m_PipeSpawnTimer += ts;
 
-        if (counter > 1.5f / m_ScrollSpeed)
+        if (m_PipeSpawnTimer > 2.0f)
         {
             std::uniform_real_distribution<float> randGen(-0.5f, 0.5f);
             float yOffset = randGen(gen);
@@ -64,16 +60,16 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
                 glm::vec2(m_ZoomLevel * m_AspectRatio + 0.2f, yOffset)
             );
 
-            counter = 0;
+            m_PipeSpawnTimer = 0;
             if (m_ScrollSpeed != 3.0f)
             {
-                m_ScrollSpeed = 1.001f * m_ScrollSpeed;
+                m_ScrollSpeed = 1.01f * m_ScrollSpeed;
                 if (m_ScrollSpeed >= 3.0f)
                     m_ScrollSpeed = 3.0f;
             }
         }
 
-        m_BirdYOffset -= 10.0f * ts * m_SpeedFactor * m_FrameTime;
+        m_BirdYOffset -= m_BirdGravity * m_SpeedFactor * m_FrameTime;
         m_SpeedFactor += 1.0f * ts;
 
         LerpBirdToExpectedPos();
@@ -89,17 +85,16 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
             float& pipePos = m_PipePos[index].x;
             float& yOffset = m_PipePos[index].y;
 
-            const float gapY = 0.3f;
-
-            Luna::Renderer2D::DrawRotatedQuad({pipePos, -1.0f - gapY + yOffset}, {0.25f, 2.0f}, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0f);
-            Luna::Renderer2D::DrawRotatedQuad({pipePos, +1.0f + gapY + yOffset}, {0.25f, 2.0f}, -3.14159f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0);
+            const float gapY = m_GapBetweenPipe / 2.0f;
 
             pipePos -= m_ScrollSpeed * ts;
 
             if (pipePos <= -(m_AspectRatio * m_ZoomLevel + 0.2f))
+            {
                 m_PipePos.erase(m_PipePos.begin() + index);
-            else
-                index++;
+                continue;
+            }
+            index++;
 
             // Colission with pipes
             if (((pipePos + 0.25/2.0f) > -(0.12f/2.0f)) && ((pipePos - 0.25/2.0f) < +(0.12f/2.0f)))
@@ -110,14 +105,32 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
         }
     }
 
+    Luna::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+    // Background
+    Luna::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {4.0f, 2.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, m_Background, 1.0f);
+
     // Top & Bottom Base
     Luna::Renderer2D::DrawRotatedQuad({0.0f, -0.95f, +0.2f}, {4.0f, 0.25f}, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Base, 1.0f);
     Luna::Renderer2D::DrawRotatedQuad({0.0f, +0.95f, +0.2f}, {4.0f, 0.25f}, -3.14159f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Base, 1.0f);
 
+    // Pipe
+    for (const auto& pipe : m_PipePos)
+    {
+        const float pipePos = pipe.x;
+        const float yOffset = pipe.y;
+
+        const float gapY = m_GapBetweenPipe / 2.0f;
+
+        Luna::Renderer2D::DrawRotatedQuad({pipePos, -1.0f - gapY + yOffset}, {0.25f, 2.0f}, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0f);
+        Luna::Renderer2D::DrawRotatedQuad({pipePos, +1.0f + gapY + yOffset}, {0.25f, 2.0f}, -3.14159f, {1.0f, 1.0f, 1.0f, 1.0f}, m_Pipe, 1.0);
+    }
+
+    // Flap flap
     Luna::Renderer2D::DrawRotatedQuad(
             {0.0f, m_BirdCurrYOffset, +0.1f},
             {0.12f, 0.12f},
-            (((1.3f - m_SpeedFactor) /5.0f) <= -3.14159 / 2 ? -3.14159/2 : ((1.3f - m_SpeedFactor)/5.0f)),
+            (((1.3f - m_SpeedFactor) /3.0f) <= -3.14159 / 2 ? -3.14159/2 : ((1.3f - m_SpeedFactor)/3.0f)),
             m_Bird
     );
 
@@ -127,6 +140,22 @@ void FlappyBird::OnUpdate(Luna::Timestep ts)
 
 void FlappyBird::OnImGuiRender()
 {
+    if (!m_ShowDebug)
+        return;
+
+    LUNA_PROFILE_FUNCTION();
+    Luna::Renderer2D::Statistics stats = Luna::Renderer2D::GetStats();
+
+    ImGui::Begin("Luna-Engine");
+    ImGui::Text("Sandbox2D Test");
+    ImGui::SeparatorText("Info");
+    ImGui::Text("Frame time: %f s\n", m_FrameTime);
+    ImGui::Text("FPS: %f", (1.0f / m_FrameTime));
+    ImGui::Text("Draw call: %u", stats.DrawCalls);
+    ImGui::Text("Quad count: %u", stats.QuadCount);
+    ImGui::Text("Vertex count: %u", stats.GetTotalVertexCount());
+    ImGui::Text("Index count: %u", stats.GetTotalIndexCount());
+    ImGui::End();
 }
 
 void FlappyBird::OnEvent(Luna::Event& event)
@@ -140,11 +169,15 @@ bool FlappyBird::OnKeyPressed(Luna::KeyPressedEvent& event)
 {
     if (event.GetKeyCode() == LunaKey_Space)
     {
-        if (!m_Start)
-            m_Start = true;
-
-        m_BirdYOffset += 12.0f * m_FrameTime * (m_SpeedFactor > 1.5f ? 1.5f : m_SpeedFactor);
-        m_SpeedFactor = 1.0f;
+        Flap();
+    }
+    if (event.GetKeyCode() == LunaKey_Tab)
+    {
+        m_ShowDebug =! m_ShowDebug;
+    }
+    if (event.GetKeyCode() == LunaKey_Espace)
+    {
+        m_Paused =! m_Paused;
     }
     return false;
 }
@@ -153,13 +186,20 @@ bool FlappyBird::OnMouseButtonPressed(Luna::MouseButtonPressedEvent& event)
 {
     if (event.GetMouseButton() == LunaMouseButton_1)
     {
-        if (!m_Start)
-            m_Start = true;
-
-        m_BirdYOffset += 12.0f * m_FrameTime * (m_SpeedFactor > 1.5f ? 1.5f : m_SpeedFactor);
-        m_SpeedFactor = 1.0f;
+        Flap();
     }
     return false;
+}
+
+void FlappyBird::Flap()
+{
+    if (!m_Start)
+        m_Start = true;
+    if (m_Paused)
+        return;
+
+    m_BirdYOffset += 12.0f * m_FrameTime * (m_SpeedFactor > 1.5f ? 1.5f : m_SpeedFactor);
+    m_SpeedFactor = 1.0f;
 }
 
 void FlappyBird::LerpBirdToExpectedPos()
