@@ -17,9 +17,9 @@ namespace Luna {
                 s_RendererAPI->SetViewport(x, y, width, height);
             }
 
-            inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
+            inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0)
             {
-                s_RendererAPI->DrawIndexed(vertexArray);
+                s_RendererAPI->DrawIndexed(vertexArray, indexCount);
             }
 
             inline static void SetClearColor(const glm::vec4& color)

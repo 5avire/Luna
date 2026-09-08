@@ -19,12 +19,14 @@ class Sandbox2D : public Luna::Layer
         Luna::CameraOrthoController m_CameraController;
 
         Luna::Ref<Luna::Texture2D> m_Texture;
+        Luna::Ref<Luna::Texture2D> m_LunaLogo;
         Luna::Ref<Luna::Texture2D> m_CheckeredTexture;
 
+        Luna::Ref<Luna::SubTexture2D> m_StairLTR;
 
         glm::vec4 m_QuadColor = { 0.2f, 0.3f, 0.8f, 1.0f };
-        glm::vec2 m_SquarePos = { 0.0f, 0.0f };
-        glm::vec2 m_SquareScale = { 1.0f, 1.0f };
+        glm::vec2 m_QuadPos = { 0.0f, 0.0f };
+        glm::vec2 m_QuadSize = { 1.0f, 1.0f };
         float m_Rotation = 0.0f;
 
         float m_FrameTime = 0.0f;

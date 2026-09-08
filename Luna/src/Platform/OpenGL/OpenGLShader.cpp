@@ -220,6 +220,19 @@ namespace Luna {
         UploadUniformFloat(value, name);
     }
 
+    void OpenGLShader::SetIntArray(int* values, uint32_t count, const std::string& name)
+    {
+        LUNA_PROFILE_FUNCTION();
+
+        UploadUniformIntArray(values, count, name);
+    }
+
+    void OpenGLShader::UploadUniformIntArray(int* values, uint32_t count, const std::string& name)
+    {
+        GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform1iv(location, count, values);
+    }
+
     void OpenGLShader::UploadUniformMat4(const glm::mat4& matrix, const std::string& name)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());

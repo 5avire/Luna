@@ -1,3 +1,4 @@
+#include "lunapch.h"
 #include "Buffer.h"
 
 #include "Luna/Core/Log.h"
@@ -7,12 +8,24 @@
 
 namespace Luna {
 
+    Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case Luna::RendererAPI::API::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
+            case Luna::RendererAPI::API::OpenGL:  return CreateRef<OpenGLVertexBuffer>(size); break;
+        }
+
+        LUNA_CORE_ASSERT(false, "UNKNOWN API");
+        return nullptr;
+    }
+
     Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
     {
         switch (Renderer::GetAPI())
         {
             case Luna::RendererAPI::API::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
-            case Luna::RendererAPI::API::OpenGL:  return std::make_shared<OpenGLVertexBuffer>(vertices, size); break;
+            case Luna::RendererAPI::API::OpenGL:  return CreateRef<OpenGLVertexBuffer>(vertices, size); break;
         }
 
         LUNA_CORE_ASSERT(false, "UNKNOWN API");
@@ -24,7 +37,7 @@ namespace Luna {
         switch (Renderer::GetAPI())
         {
             case Luna::RendererAPI::API::None:    LUNA_CORE_ASSERT(false, "Luna doesn't have a headless build yet!"); break;
-            case Luna::RendererAPI::API::OpenGL:  return std::make_shared<OpenGLIndexBuffer>(vertices, count); break;
+            case Luna::RendererAPI::API::OpenGL:  return CreateRef<OpenGLIndexBuffer>(vertices, count); break;
         }
 
         LUNA_CORE_ASSERT(false, "UNKNOWN API");

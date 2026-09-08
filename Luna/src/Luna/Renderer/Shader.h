@@ -23,6 +23,8 @@ namespace Luna {
             virtual void SetInt(const int value, const std::string& name) = 0;
             virtual void SetFloat(const float value, const std::string& name) = 0;
 
+            virtual void SetIntArray(int* values, uint32_t count, const std::string& name) = 0;
+
             static Ref<Shader> Create(const std::string& pathToShader);
             static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
     };

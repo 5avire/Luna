@@ -31,12 +31,13 @@
 #include <Luna/Renderer/Shader.h>
 #include <Luna/Renderer/Camera.h>
 #include <Luna/Renderer/Texture.h>
+#include <Luna/Renderer/SubTexture.h>
 #include <Luna/Renderer/VertexArray.h>
 #include <Luna/Renderer/CameraController.h>
 // -- Rendering --
 
-// -- Logging ---
+// -- Logging --
 // Bugs out without ostr sometimes
 #include <spdlog/fmt/ostr.h>
 #include <Luna/Core/Log.h>
-// -- Logging ---
+// -- Logging --
